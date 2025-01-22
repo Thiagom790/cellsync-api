@@ -1,0 +1,6 @@
+﻿services:
+  cellsync.api:
+    image: cellsync.api
+    build:
+      context: .
+      dockerfile: src/CellSync.Api/Dockerfile

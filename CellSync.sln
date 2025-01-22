@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{40E730C4-0BEB-4F0F-983C-1640FA118263}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellSync.Api", "src\CellSync.Api\CellSync.Api.csproj", "{1A38D8AD-DA02-4831-BBA4-6A759A612008}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8B652980-05B4-4E09-BCCD-0C1D1FE96C84}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellSync.Application", "src\CellSync.Application\CellSync.Application.csproj", "{EB3F3277-74FC-4740-8495-317E9A0C2643}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellSync.Domain", "src\CellSync.Domain\CellSync.Domain.csproj", "{EE5284D6-32BE-48C7-A2D5-61C9F6A6DEA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellSync.Infrastructure", "src\CellSync.Infrastructure\CellSync.Infrastructure.csproj", "{7174C1FC-10AE-429F-878E-920E539ACFEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellSync.Communication", "src\CellSync.Communication\CellSync.Communication.csproj", "{E4778CA7-300F-45F0-A249-804E8FE98820}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1A38D8AD-DA02-4831-BBA4-6A759A612008} = {40E730C4-0BEB-4F0F-983C-1640FA118263}
+		{EB3F3277-74FC-4740-8495-317E9A0C2643} = {40E730C4-0BEB-4F0F-983C-1640FA118263}
+		{EE5284D6-32BE-48C7-A2D5-61C9F6A6DEA2} = {40E730C4-0BEB-4F0F-983C-1640FA118263}
+		{7174C1FC-10AE-429F-878E-920E539ACFEC} = {40E730C4-0BEB-4F0F-983C-1640FA118263}
+		{E4778CA7-300F-45F0-A249-804E8FE98820} = {40E730C4-0BEB-4F0F-983C-1640FA118263}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1A38D8AD-DA02-4831-BBA4-6A759A612008}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A38D8AD-DA02-4831-BBA4-6A759A612008}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A38D8AD-DA02-4831-BBA4-6A759A612008}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A38D8AD-DA02-4831-BBA4-6A759A612008}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB3F3277-74FC-4740-8495-317E9A0C2643}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB3F3277-74FC-4740-8495-317E9A0C2643}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB3F3277-74FC-4740-8495-317E9A0C2643}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB3F3277-74FC-4740-8495-317E9A0C2643}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE5284D6-32BE-48C7-A2D5-61C9F6A6DEA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE5284D6-32BE-48C7-A2D5-61C9F6A6DEA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE5284D6-32BE-48C7-A2D5-61C9F6A6DEA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE5284D6-32BE-48C7-A2D5-61C9F6A6DEA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7174C1FC-10AE-429F-878E-920E539ACFEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7174C1FC-10AE-429F-878E-920E539ACFEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7174C1FC-10AE-429F-878E-920E539ACFEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7174C1FC-10AE-429F-878E-920E539ACFEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4778CA7-300F-45F0-A249-804E8FE98820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4778CA7-300F-45F0-A249-804E8FE98820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4778CA7-300F-45F0-A249-804E8FE98820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4778CA7-300F-45F0-A249-804E8FE98820}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
