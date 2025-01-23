@@ -1,5 +1,5 @@
 ﻿using CellSync.Domain.Entities;
-using CellSync.Domain.Repositories;
+using CellSync.Domain.Repositories.Member;
 using Microsoft.EntityFrameworkCore;
 
 namespace CellSync.Infrastructure.DataAccess.Repositories;
@@ -20,7 +20,7 @@ public class MembersRepository(CellSyncDbContext dbContext) : IMemberRepository
     public async Task<List<Member>> GetAll()
     {
         var members = await _dbDbContext.Members.AsNoTracking().ToListAsync();
-        
+
         return members;
     }
 }

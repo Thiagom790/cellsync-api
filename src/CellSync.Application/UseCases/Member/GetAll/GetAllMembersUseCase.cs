@@ -1,5 +1,5 @@
 ﻿using CellSync.Communication.Responses;
-using CellSync.Domain.Repositories;
+using CellSync.Domain.Repositories.Member;
 
 namespace CellSync.Application.UseCases.Member.GetAll;
 

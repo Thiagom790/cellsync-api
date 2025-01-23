@@ -10,16 +10,16 @@ namespace CellSync.Api.Controllers;
 [Route("[controller]")]
 public class MemberController : ControllerBase
 {
-
     [HttpGet]
     [ProducesResponseType(typeof(ResponseGetAllMembersJson), StatusCodes.Status200OK)]
-    public async Task<ActionResult<ResponseGetAllMembersJson>> GetAllMembers([FromServices] IGetAllMembersUseCase useCase)
+    public async Task<ActionResult<ResponseGetAllMembersJson>> GetAllMembers(
+        [FromServices] IGetAllMembersUseCase useCase)
     {
         var response = await useCase.Execute();
-        
+
         return Ok(response);
     }
-    
+
     [HttpPost]
     [ProducesResponseType(typeof(ResponseRegisterMemberJson), StatusCodes.Status201Created)]
     public async Task<ActionResult<ResponseRegisterMemberJson>> RegisterMember(
@@ -28,7 +28,7 @@ public class MemberController : ControllerBase
     )
     {
         var response = await useCase.Execute(request);
-        
+
         return Created(string.Empty, response);
     }
 }

@@ -7,12 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CellSync.Communication\CellSync.Communication.csproj" />
-      <ProjectReference Include="..\CellSync.Domain\CellSync.Domain.csproj" />
+        <ProjectReference Include="..\CellSync.Communication\CellSync.Communication.csproj"/>
+        <ProjectReference Include="..\CellSync.Domain\CellSync.Domain.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2"/>
     </ItemGroup>
 
 </Project>

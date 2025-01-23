@@ -1,4 +1,4 @@
-﻿using CellSync.Domain.Repositories;
+﻿using CellSync.Domain.Repositories.Member;
 using CellSync.Infrastructure.DataAccess;
 using CellSync.Infrastructure.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +22,8 @@ public static class DependencyInjectionExtension
 
     private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
     {
-        const string connectionString = @"Host=localhost;Port=5432;Username=postgres;Password=@Password123;Database=cellsync;";
+        const string connectionString =
+            @"Host=localhost;Port=5432;Username=postgres;Password=@Password123;Database=cellsync;";
 
         services.AddDbContext<CellSyncDbContext>(config => config.UseNpgsql(connectionString));
     }

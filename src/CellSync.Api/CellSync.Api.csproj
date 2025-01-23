@@ -9,22 +9,22 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CellSync.Application\CellSync.Application.csproj" />
-      <ProjectReference Include="..\CellSync.Communication\CellSync.Communication.csproj" />
-      <ProjectReference Include="..\CellSync.Infrastructure\CellSync.Infrastructure.csproj" />
+        <ProjectReference Include="..\CellSync.Application\CellSync.Application.csproj"/>
+        <ProjectReference Include="..\CellSync.Communication\CellSync.Communication.csproj"/>
+        <ProjectReference Include="..\CellSync.Infrastructure\CellSync.Infrastructure.csproj"/>
     </ItemGroup>
 
 </Project>

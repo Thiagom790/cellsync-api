@@ -9,9 +9,9 @@ public static class DatabaseMigrationExtension
     public static async Task MigrateDatabaseAsync(this IServiceProvider serviceProvider)
     {
         await using var scope = serviceProvider.CreateAsyncScope();
-        
+
         var dbContext = scope.ServiceProvider.GetRequiredService<CellSyncDbContext>();
-        
+
         await dbContext.Database.MigrateAsync();
     }
 }
