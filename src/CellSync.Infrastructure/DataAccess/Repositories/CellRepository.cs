@@ -18,7 +18,8 @@ internal class CellRepository(CellSyncDbContext dbContext) : ICellRepository
 
         if (cell is null) return cell;
 
-        var cellAddress = await dbContext.CellAddresses.Where(cellAddress => cellAddress.CellId == cell.Id)
+        var cellAddress = await dbContext.CellAddresses
+            .Where(cellAddress => cellAddress.CellId == cell.Id && cellAddress.IsCurrent)
             .FirstOrDefaultAsync();
 
         cell.CurrentAddress = cellAddress;
