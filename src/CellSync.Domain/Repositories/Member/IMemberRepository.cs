@@ -2,7 +2,7 @@
 
 public interface IMemberRepository
 {
-    Task<Entities.Member> Add(Entities.Member member);
+    Task Add(Entities.Member member);
 
     Task<List<Entities.Member>> GetAll();
 }

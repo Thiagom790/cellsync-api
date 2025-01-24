@@ -12,15 +12,14 @@ public class RegisterMemberUseCase(IMemberRepository memberRepository) : IRegist
     {
         var newMember = new Domain.Entities.Member
         {
+            Id = Guid.NewGuid(),
             Email = request.Email,
             Name = request.Name,
             Phone = request.Phone,
             ProfileType = request.ProfileType
         };
 
-        var addedMember = await _memberRepository.Add(newMember);
-        var response = new ResponseRegisterMemberJson { Id = addedMember.Id };
-
-        return response;
+        await _memberRepository.Add(newMember);
+        return new ResponseRegisterMemberJson { Id = newMember.Id };
     }
 }

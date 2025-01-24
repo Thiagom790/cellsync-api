@@ -8,19 +8,14 @@ public class MembersRepository(CellSyncDbContext dbContext) : IMemberRepository
 {
     private readonly CellSyncDbContext _dbDbContext = dbContext;
 
-    public async Task<Member> Add(Member member)
+    public async Task Add(Member member)
     {
-        var entity = await _dbDbContext.Members.AddAsync(member);
-        var addedMember = entity.Entity;
+        await _dbDbContext.Members.AddAsync(member);
         await _dbDbContext.SaveChangesAsync();
-
-        return addedMember;
     }
 
     public async Task<List<Member>> GetAll()
     {
-        var members = await _dbDbContext.Members.AsNoTracking().ToListAsync();
-
-        return members;
+        return await _dbDbContext.Members.AsNoTracking().ToListAsync();
     }
 }
