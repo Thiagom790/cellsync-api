@@ -3,7 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CellSync.Infrastructure.DataAccess;
 
-public class CellSyncDbContext(DbContextOptions options) : DbContext(options)
+internal class CellSyncDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<Member> Members { get; set; }
+
+    public DbSet<Cell> Cells { get; set; }
+
+    public DbSet<CellAddress> CellAddresses { get; set; }
 }

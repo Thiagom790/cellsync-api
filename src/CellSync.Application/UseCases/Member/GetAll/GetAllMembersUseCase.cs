@@ -5,11 +5,9 @@ namespace CellSync.Application.UseCases.Member.GetAll;
 
 public class GetAllMembersUseCase(IMemberRepository memberRepository) : IGetAllMembersUseCase
 {
-    private readonly IMemberRepository _memberRepository = memberRepository;
-
     public async Task<ResponseGetAllMembersJson> Execute()
     {
-        var result = await _memberRepository.GetAll();
+        var result = await memberRepository.GetAll();
 
         var response = new ResponseGetAllMembersJson
         {

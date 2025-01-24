@@ -6,8 +6,6 @@ namespace CellSync.Application.UseCases.Member.Register;
 
 public class RegisterMemberUseCase(IMemberRepository memberRepository) : IRegisterMemberUseCase
 {
-    private readonly IMemberRepository _memberRepository = memberRepository;
-
     public async Task<ResponseRegisterMemberJson> Execute(RequestRegisterMemberJson request)
     {
         var newMember = new Domain.Entities.Member
@@ -19,7 +17,7 @@ public class RegisterMemberUseCase(IMemberRepository memberRepository) : IRegist
             ProfileType = request.ProfileType
         };
 
-        await _memberRepository.Add(newMember);
+        await memberRepository.Add(newMember);
         return new ResponseRegisterMemberJson { Id = newMember.Id };
     }
 }

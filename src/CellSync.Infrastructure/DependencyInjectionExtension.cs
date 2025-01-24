@@ -1,4 +1,5 @@
-﻿using CellSync.Domain.Repositories.Member;
+﻿using CellSync.Domain.Repositories.Cell;
+using CellSync.Domain.Repositories.Member;
 using CellSync.Infrastructure.DataAccess;
 using CellSync.Infrastructure.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ public static class DependencyInjectionExtension
     private static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IMemberRepository, MemberRepository>();
+        services.AddScoped<ICellRepository, CellRepository>();
     }
 
     private static void AddDbContext(IServiceCollection services, IConfiguration configuration)

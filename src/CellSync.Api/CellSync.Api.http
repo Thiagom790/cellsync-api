@@ -1,6 +1,0 @@
-@CellSync.Api_HostAddress = http://localhost:5265
-
-GET {{CellSync.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CellSync.Infrastructure.DataAccess.Repositories;
 
-public class MemberRepository(CellSyncDbContext dbContext) : IMemberRepository
+internal class MemberRepository(CellSyncDbContext dbContext) : IMemberRepository
 {
     public async Task Add(Member member)
     {
