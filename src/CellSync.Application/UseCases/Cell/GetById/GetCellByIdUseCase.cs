@@ -3,8 +3,10 @@ using CellSync.Domain.Repositories.Cell;
 
 namespace CellSync.Application.UseCases.Cell.GetById;
 
-public class GetCellByIdUseCase(ICellRepository cellRepository, ICellAddressRepository cellAddressRepository)
-    : IGetCellByIdUseCase
+public class GetCellByIdUseCase(
+    ICellRepository cellRepository,
+    ICellAddressRepository cellAddressRepository
+) : IGetCellByIdUseCase
 {
     public async Task<ResponseGetCellByIdJson?> Execute(Guid id)
     {

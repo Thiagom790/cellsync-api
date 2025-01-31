@@ -1,4 +1,5 @@
-﻿using CellSync.Application.UseCases.Cell.GetById;
+﻿using CellSync.Application.UseCases.Cell.GetAll;
+using CellSync.Application.UseCases.Cell.GetById;
 using CellSync.Application.UseCases.Cell.Register;
 using CellSync.Application.UseCases.Member.GetAll;
 using CellSync.Application.UseCases.Member.Register;
@@ -14,5 +15,6 @@ public static class DependencyInjectionExtension
         services.AddScoped<IGetAllMembersUseCase, GetAllMembersUseCase>();
         services.AddScoped<IRegisterCellUseCase, RegisterCellUseCase>();
         services.AddScoped<IGetCellByIdUseCase, GetCellByIdUseCase>();
+        services.AddScoped<IGetAllCellsUseCase, GetAllCellsUseCase>();
     }
 }

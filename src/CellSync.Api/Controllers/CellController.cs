@@ -1,4 +1,5 @@
-﻿using CellSync.Application.UseCases.Cell.GetById;
+﻿using CellSync.Application.UseCases.Cell.GetAll;
+using CellSync.Application.UseCases.Cell.GetById;
 using CellSync.Application.UseCases.Cell.Register;
 using CellSync.Communication.Requests;
 using CellSync.Communication.Responses;
@@ -25,12 +26,22 @@ public class CellController : ControllerBase
     [Route("{id:guid}")]
     [ProducesResponseType(typeof(ResponseGetCellByIdJson), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ResponseGetCellByIdJson>> Get([FromRoute] Guid id,
+    public async Task<ActionResult<ResponseGetCellByIdJson>> GetCellById([FromRoute] Guid id,
         [FromServices] IGetCellByIdUseCase useCase)
     {
         var response = await useCase.Execute(id);
 
         if (response is null) return NotFound();
+
+        return Ok(response);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(ResponseGetAllCellsJson), StatusCodes.Status200OK)]
+    public async Task<ActionResult<ResponseGetAllCellsJson>> GetAllCells(
+        [FromServices] IGetAllCellsUseCase useCase)
+    {
+        var response = await useCase.Execute();
 
         return Ok(response);
     }

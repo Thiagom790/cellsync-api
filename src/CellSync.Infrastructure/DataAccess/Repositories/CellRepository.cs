@@ -23,4 +23,9 @@ internal class CellRepository(CellSyncDbContext dbContext) : ICellRepository, IC
     {
         return await dbContext.Cells.FindAsync(id);
     }
+
+    public async Task<List<Cell>> GetAll()
+    {
+        return await dbContext.Cells.AsNoTracking().ToListAsync();
+    }
 }
