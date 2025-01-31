@@ -1,10 +1,14 @@
 ﻿using CellSync.Communication.Requests;
 using CellSync.Communication.Responses;
+using CellSync.Domain.Repositories;
 using CellSync.Domain.Repositories.Member;
 
 namespace CellSync.Application.UseCases.Member.Register;
 
-public class RegisterMemberUseCase(IMemberRepository memberRepository) : IRegisterMemberUseCase
+public class RegisterMemberUseCase(
+    IMemberRepository memberRepository,
+    IUnitOfWork unitOfWork
+) : IRegisterMemberUseCase
 {
     public async Task<ResponseRegisterMemberJson> Execute(RequestRegisterMemberJson request)
     {
@@ -18,6 +22,8 @@ public class RegisterMemberUseCase(IMemberRepository memberRepository) : IRegist
         };
 
         await memberRepository.Add(newMember);
+        await unitOfWork.CommitAsync();
+        
         return new ResponseRegisterMemberJson { Id = newMember.Id };
     }
 }

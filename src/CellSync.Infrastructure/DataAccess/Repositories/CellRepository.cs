@@ -16,7 +16,6 @@ internal class CellRepository(CellSyncDbContext dbContext) : ICellRepository, IC
     public async Task Add(Cell cell)
     {
         await dbContext.Cells.AddAsync(cell);
-        await dbContext.SaveChangesAsync();
     }
 
     public async Task<Cell?> GetById(Guid id)
