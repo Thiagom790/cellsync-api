@@ -20,6 +20,7 @@ public static class DependencyInjectionExtension
     {
         services.AddScoped<IMemberRepository, MemberRepository>();
         services.AddScoped<ICellRepository, CellRepository>();
+        services.AddScoped<ICellAddressRepository, CellRepository>();
     }
 
     private static void AddDbContext(IServiceCollection services, IConfiguration configuration)

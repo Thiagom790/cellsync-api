@@ -17,13 +17,16 @@ public class RegisterCellUseCase(ICellRepository cellRepository) : IRegisterCell
         };
 
         if (request.Address is not null && request.Address.Length > 0)
-            cell.CurrentAddress = new CellAddress
-            {
-                Address = request.Address,
-                IsCurrent = true,
-                CellId = cell.Id,
-                Id = Guid.NewGuid()
-            };
+            cell.Addresses =
+            [
+                new CellAddress
+                {
+                    Address = request.Address,
+                    IsCurrent = true,
+                    CellId = cell.Id,
+                    Id = Guid.NewGuid()
+                }
+            ];
 
         await cellRepository.Add(cell);
 

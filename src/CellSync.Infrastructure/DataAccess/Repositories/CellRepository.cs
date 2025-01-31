@@ -4,8 +4,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CellSync.Infrastructure.DataAccess.Repositories;
 
-internal class CellRepository(CellSyncDbContext dbContext) : ICellRepository
+internal class CellRepository(CellSyncDbContext dbContext) : ICellRepository, ICellAddressRepository
 {
+    public async Task<CellAddress?> GetCurrentCellAddress(Guid cellId)
+    {
+        return await dbContext.CellAddresses
+            .Where(cellAddress => cellAddress.CellId == cellId && cellAddress.IsCurrent)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task Add(Cell cell)
     {
         await dbContext.Cells.AddAsync(cell);
@@ -14,16 +21,6 @@ internal class CellRepository(CellSyncDbContext dbContext) : ICellRepository
 
     public async Task<Cell?> GetById(Guid id)
     {
-        var cell = await dbContext.Cells.FindAsync(id);
-
-        if (cell is null) return cell;
-
-        var cellAddress = await dbContext.CellAddresses
-            .Where(cellAddress => cellAddress.CellId == cell.Id && cellAddress.IsCurrent)
-            .FirstOrDefaultAsync();
-
-        cell.CurrentAddress = cellAddress;
-
-        return cell;
+        return await dbContext.Cells.FindAsync(id);
     }
 }
