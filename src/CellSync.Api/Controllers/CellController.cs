@@ -19,7 +19,7 @@ public class CellController : ControllerBase
         [FromServices] IRegisterCellUseCase useCase
     )
     {
-        var response = await useCase.Execute(request);
+        var response = await useCase.ExecuteAsync(request);
 
         return Created(string.Empty, response);
     }
@@ -33,9 +33,7 @@ public class CellController : ControllerBase
         [FromServices] IGetCellByIdUseCase useCase
     )
     {
-        var response = await useCase.Execute(id);
-
-        if (response is null) return NotFound();
+        var response = await useCase.ExecuteAsync(id);
 
         return Ok(response);
     }
@@ -45,12 +43,12 @@ public class CellController : ControllerBase
     public async Task<ActionResult<ResponseGetAllCellsJson>> GetAllCells(
         [FromServices] IGetAllCellsUseCase useCase)
     {
-        var response = await useCase.Execute();
+        var response = await useCase.ExecuteAsync();
 
         return Ok(response);
     }
 
-    [HttpPatch]
+    [HttpPut]
     [Route("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> UpdateCell(
@@ -59,7 +57,7 @@ public class CellController : ControllerBase
         [FromBody] RequestUpdateCellJson request
     )
     {
-        await useCase.Execute(id, request);
+        await useCase.ExecuteAsync(id, request);
 
         return NoContent();
     }

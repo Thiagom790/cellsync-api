@@ -4,5 +4,5 @@ namespace CellSync.Application.UseCases.Cell.Update;
 
 public interface IUpdateCellUseCase
 {
-    Task Execute(Guid cellId, RequestUpdateCellJson request);
+    Task ExecuteAsync(Guid cellId, RequestUpdateCellJson request);
 }

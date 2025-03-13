@@ -8,6 +8,4 @@ internal class CellSyncDbContext(DbContextOptions options) : DbContext(options)
     public DbSet<Member> Members { get; set; }
 
     public DbSet<Cell> Cells { get; set; }
-
-    public DbSet<CellAddress> CellAddresses { get; set; }
 }

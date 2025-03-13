@@ -5,31 +5,22 @@ namespace CellSync.Application.UseCases.Cell.GetAll;
 
 public class GetAllCellsUseCase(ICellRepository cellRepository) : IGetAllCellsUseCase
 {
-    public async Task<ResponseGetAllCellsJson> Execute()
+    public async Task<ResponseGetAllCellsJson> ExecuteAsync()
     {
-        var result = await cellRepository.GetAllWithCurrentAddress();
-        var response = new ResponseGetAllCellsJson();
-
-        foreach (var cell in result)
-        {
-            var cellResponse = new ResponseCellJson
+        var result = await cellRepository.GetAllAsync();
+        var cellsResponse = result
+            .Select(cell => new ResponseCellJson
             {
                 Id = cell.Id,
                 Name = cell.Name,
-                IsActive = cell.IsActive
-            };
+                Address = cell.Address,
+                IsActive = cell.IsActive,
+            }).ToList();
 
-            if (cell.Addresses.Count > 0)
-            {
-                cellResponse.CurrentAddress = new ResponseGetCellAddressJson
-                {
-                    Id = cell.Addresses.First().Id,
-                    Address = cell.Addresses.First().Address,
-                };
-            }
-
-            response.Cells.Add(cellResponse);
-        }
+        var response = new ResponseGetAllCellsJson
+        {
+            Cells = cellsResponse
+        };
 
         return response;
     }

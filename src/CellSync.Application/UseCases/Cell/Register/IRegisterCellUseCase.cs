@@ -5,5 +5,5 @@ namespace CellSync.Application.UseCases.Cell.Register;
 
 public interface IRegisterCellUseCase
 {
-    Task<ResponseRegisterCellJson> Execute(RequestRegisterCellJson request);
+    Task<ResponseRegisterCellJson> ExecuteAsync(RequestRegisterCellJson request);
 }

@@ -5,30 +5,22 @@ namespace CellSync.Application.UseCases.Cell.GetById;
 
 public class GetCellByIdUseCase(ICellRepository cellRepository) : IGetCellByIdUseCase
 {
-    public async Task<ResponseGetCellByIdJson?> Execute(Guid id)
+    public async Task<ResponseGetCellByIdJson> ExecuteAsync(Guid id)
     {
-        var result = await cellRepository.GetByIdWithCurrentAddress(id);
+        var result = await cellRepository.GetByIdAsync(id);
 
-        if (result is null) return null;
-
+        if (result is null)
+        {
+            throw new Exception("Cell not found");
+        }
 
         var response = new ResponseGetCellByIdJson
         {
             Id = result.Id,
             Name = result.Name,
-            IsActive = result.IsActive
+            IsActive = result.IsActive,
+            Address = result.Address,
         };
-
-        var cellAddress = result.Addresses.FirstOrDefault();
-
-        if (cellAddress is not null)
-        {
-            response.CurrentAddress = new ResponseGetCellAddressJson
-            {
-                Id = cellAddress.Id,
-                Address = cellAddress.Address
-            };
-        }
 
         return response;
     }

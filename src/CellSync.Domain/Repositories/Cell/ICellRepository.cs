@@ -4,17 +4,11 @@ namespace CellSync.Domain.Repositories.Cell;
 
 public interface ICellRepository
 {
-    Task Add(Entities.Cell cell);
+    Task AddAsync(Entities.Cell cell);
 
-    Task<Entities.Cell?> GetById(Guid cellId);
+    Task<Entities.Cell?> GetByIdAsync(Guid cellId);
 
-    Task<Entities.Cell?> GetByIdWithCurrentAddress(Guid id);
-
-    Task<List<Entities.Cell>> GetAllWithCurrentAddress();
+    Task<List<Entities.Cell>> GetAllAsync();
 
     void Update(Entities.Cell cell);
-
-    Task<CellAddress?> GetCurrentCellAddress(Guid cellId);
-
-    Task AddNewCellAddress(CellAddress cellAddress);
 }

@@ -7,24 +7,18 @@ namespace CellSync.Application.UseCases.Cell.Update;
 
 public class UpdateCellUseCase(ICellRepository cellRepository, IUnitOfWork unitOfWork) : IUpdateCellUseCase
 {
-    public async Task Execute(Guid cellId, RequestUpdateCellJson request)
+    public async Task ExecuteAsync(Guid cellId, RequestUpdateCellJson request)
     {
-        var result = await cellRepository.GetById(cellId);
+        var result = await cellRepository.GetByIdAsync(cellId);
 
         if (result is null)
         {
             throw new Exception("Cell not found");
         }
 
-        if (!string.IsNullOrWhiteSpace(request.Name))
-        {
-            result.Name = request.Name;
-        }
-
-        if (request.IsActive.HasValue)
-        {
-            result.IsActive = request.IsActive.Value;
-        }
+        result.Name = request.Name;
+        result.IsActive = request.IsActive;
+        result.Address = request.Address;
 
         cellRepository.Update(result);
 
