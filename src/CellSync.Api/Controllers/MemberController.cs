@@ -23,14 +23,14 @@ public class MemberController : ControllerBase
     }
 
     [HttpGet]
-    [Route("{memberId:guid}")]
+    [Route("{id:guid}")]
     [ProducesResponseType(typeof(ResponseGetMemberByIdJson), StatusCodes.Status200OK)]
     public async Task<ActionResult<ResponseGetMemberByIdJson>> GetMemberById(
-        [FromRoute] Guid memberId,
+        [FromRoute] Guid id,
         [FromServices] IGetMemberByIdUseCase useCase
     )
     {
-        var response = await useCase.ExecuteAsync(memberId);
+        var response = await useCase.ExecuteAsync(id);
 
         return Ok(response);
     }
