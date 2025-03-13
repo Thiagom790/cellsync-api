@@ -1,6 +1,7 @@
 ﻿using CellSync.Application.UseCases.Cell.GetAll;
 using CellSync.Application.UseCases.Cell.GetById;
 using CellSync.Application.UseCases.Cell.Register;
+using CellSync.Application.UseCases.Cell.Update;
 using CellSync.Communication.Requests;
 using CellSync.Communication.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,8 @@ public class CellController : ControllerBase
     [ProducesResponseType(typeof(ResponseRegisterCellJson), StatusCodes.Status201Created)]
     public async Task<ActionResult<RequestRegisterCellJson>> RegisterCell(
         [FromBody] RequestRegisterCellJson request,
-        [FromServices] IRegisterCellUseCase useCase)
+        [FromServices] IRegisterCellUseCase useCase
+    )
     {
         var response = await useCase.Execute(request);
 
@@ -26,8 +28,10 @@ public class CellController : ControllerBase
     [Route("{id:guid}")]
     [ProducesResponseType(typeof(ResponseGetCellByIdJson), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ResponseGetCellByIdJson>> GetCellById([FromRoute] Guid id,
-        [FromServices] IGetCellByIdUseCase useCase)
+    public async Task<ActionResult<ResponseGetCellByIdJson>> GetCellById(
+        [FromRoute] Guid id,
+        [FromServices] IGetCellByIdUseCase useCase
+    )
     {
         var response = await useCase.Execute(id);
 
@@ -44,5 +48,19 @@ public class CellController : ControllerBase
         var response = await useCase.Execute();
 
         return Ok(response);
+    }
+
+    [HttpPatch]
+    [Route("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> UpdateCell(
+        [FromServices] IUpdateCellUseCase useCase,
+        [FromRoute] Guid id,
+        [FromBody] RequestUpdateCellJson request
+    )
+    {
+        await useCase.Execute(id, request);
+
+        return NoContent();
     }
 }

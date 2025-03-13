@@ -11,6 +11,18 @@ internal class CellRepository(CellSyncDbContext dbContext) : ICellRepository
         await dbContext.Cells.AddAsync(cell);
     }
 
+    public void Update(Cell cell)
+    {
+        dbContext.Cells.Update(cell);
+    }
+
+    public async Task<Cell?> GetById(Guid cellId)
+    {
+        var result = await dbContext.Cells.FindAsync(cellId);
+
+        return result;
+    }
+
     public async Task<Cell?> GetByIdWithCurrentAddress(Guid id)
     {
         var result = await dbContext.Cells
@@ -28,5 +40,20 @@ internal class CellRepository(CellSyncDbContext dbContext) : ICellRepository
             .Include(cell => cell.Addresses.Where(address => address.IsCurrent))
             .AsNoTracking()
             .ToListAsync();
+    }
+    
+    public async Task<CellAddress?> GetCurrentCellAddress(Guid cellId)
+    {
+        var result = await dbContext.CellAddresses
+            .Where(address => address.CellId == cellId)
+            .Where(address => address.IsCurrent)
+            .FirstOrDefaultAsync();
+
+        return result;
+    }
+
+    public async Task AddNewCellAddress(CellAddress cellAddress)
+    {
+        await dbContext.CellAddresses.AddAsync(cellAddress);
     }
 }
