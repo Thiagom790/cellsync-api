@@ -8,18 +8,16 @@ public class GetAllCellsUseCase(ICellRepository cellRepository) : IGetAllCellsUs
     public async Task<ResponseGetAllCellsJson> ExecuteAsync()
     {
         var result = await cellRepository.GetAllAsync();
-        var cellsResponse = result
-            .Select(cell => new ResponseCellJson
+
+        var response = new ResponseGetAllCellsJson
+        {
+            Cells = result.Select(cell => new ResponseCellJson
             {
                 Id = cell.Id,
                 Name = cell.Name,
                 Address = cell.Address,
                 IsActive = cell.IsActive
-            }).ToList();
-
-        var response = new ResponseGetAllCellsJson
-        {
-            Cells = cellsResponse
+            }).ToList()
         };
 
         return response;
