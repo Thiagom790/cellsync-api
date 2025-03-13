@@ -2,7 +2,7 @@
 
 public class ResponseGetAllCellsJson
 {
-    public List<ResponseCellJson> Cells { get; set; } = [];
+    public List<ResponseCellJson> Cells { get; init; } = [];
 }
 
 public class ResponseCellJson

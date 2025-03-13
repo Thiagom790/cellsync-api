@@ -4,27 +4,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CellSync.Infrastructure.DataAccess.Repositories;
 
-internal class CellRepository(CellSyncDbContext dbContext) : ICellRepository, ICellAddressRepository
+internal class CellRepository(CellSyncDbContext dbContext) : ICellRepository
 {
-    public async Task<CellAddress?> GetCurrentCellAddress(Guid cellId)
-    {
-        return await dbContext.CellAddresses
-            .Where(cellAddress => cellAddress.CellId == cellId && cellAddress.IsCurrent)
-            .FirstOrDefaultAsync();
-    }
-
     public async Task Add(Cell cell)
     {
         await dbContext.Cells.AddAsync(cell);
     }
 
-    public async Task<Cell?> GetById(Guid id)
+    public async Task<Cell?> GetByIdWithCurrentAddress(Guid id)
     {
-        return await dbContext.Cells.FindAsync(id);
+        var result = await dbContext.Cells
+            .Include(cell => cell.Addresses.Where(address => address.IsCurrent))
+            .AsNoTracking()
+            .Where(cell => cell.Id == id)
+            .FirstOrDefaultAsync();
+
+        return result;
     }
 
-    public async Task<List<Cell>> GetAll()
+    public async Task<List<Cell>> GetAllWithCurrentAddress()
     {
-        return await dbContext.Cells.AsNoTracking().ToListAsync();
+        return await dbContext.Cells
+            .Include(cell => cell.Addresses.Where(address => address.IsCurrent))
+            .AsNoTracking()
+            .ToListAsync();
     }
 }

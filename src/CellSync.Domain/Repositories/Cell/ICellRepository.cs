@@ -4,7 +4,7 @@ public interface ICellRepository
 {
     Task Add(Entities.Cell cell);
 
-    Task<Entities.Cell?> GetById(Guid id);
+    Task<Entities.Cell?> GetByIdWithCurrentAddress(Guid id);
     
-    Task<List<Entities.Cell>> GetAll();
+    Task<List<Entities.Cell>> GetAllWithCurrentAddress();
 }

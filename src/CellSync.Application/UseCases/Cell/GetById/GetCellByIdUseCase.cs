@@ -3,14 +3,11 @@ using CellSync.Domain.Repositories.Cell;
 
 namespace CellSync.Application.UseCases.Cell.GetById;
 
-public class GetCellByIdUseCase(
-    ICellRepository cellRepository,
-    ICellAddressRepository cellAddressRepository
-) : IGetCellByIdUseCase
+public class GetCellByIdUseCase(ICellRepository cellRepository) : IGetCellByIdUseCase
 {
     public async Task<ResponseGetCellByIdJson?> Execute(Guid id)
     {
-        var result = await cellRepository.GetById(id);
+        var result = await cellRepository.GetByIdWithCurrentAddress(id);
 
         if (result is null) return null;
 
@@ -22,14 +19,16 @@ public class GetCellByIdUseCase(
             IsActive = result.IsActive
         };
 
-        var cellAddress = await cellAddressRepository.GetCurrentCellAddress(result.Id);
+        var cellAddress = result.Addresses.FirstOrDefault();
 
         if (cellAddress is not null)
+        {
             response.CurrentAddress = new ResponseGetCellAddressJson
             {
                 Id = cellAddress.Id,
                 Address = cellAddress.Address
             };
+        }
 
         return response;
     }

@@ -3,33 +3,32 @@ using CellSync.Domain.Repositories.Cell;
 
 namespace CellSync.Application.UseCases.Cell.GetAll;
 
-public class GetAllCellsUseCase(
-    ICellRepository cellRepository,
-    ICellAddressRepository cellAddressRepository
-) : IGetAllCellsUseCase
+public class GetAllCellsUseCase(ICellRepository cellRepository) : IGetAllCellsUseCase
 {
     public async Task<ResponseGetAllCellsJson> Execute()
     {
-        var result = await cellRepository.GetAll();
+        var result = await cellRepository.GetAllWithCurrentAddress();
         var response = new ResponseGetAllCellsJson();
 
         foreach (var cell in result)
         {
-            var address = await cellAddressRepository.GetCurrentCellAddress(cell.Id);
-
-            response.Cells.Add(new ResponseCellJson
+            var cellResponse = new ResponseCellJson
             {
                 Id = cell.Id,
-                IsActive = cell.IsActive,
                 Name = cell.Name,
-                CurrentAddress = address is null
-                    ? null
-                    : new ResponseGetCellAddressJson
-                    {
-                        Id = address.Id,
-                        Address = address.Address
-                    },
-            });
+                IsActive = cell.IsActive
+            };
+
+            if (cell.Addresses.Count > 0)
+            {
+                cellResponse.CurrentAddress = new ResponseGetCellAddressJson
+                {
+                    Id = cell.Addresses.First().Id,
+                    Address = cell.Addresses.First().Address,
+                };
+            }
+
+            response.Cells.Add(cellResponse);
         }
 
         return response;
