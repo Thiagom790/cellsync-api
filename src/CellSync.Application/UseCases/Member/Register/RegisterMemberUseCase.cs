@@ -23,7 +23,7 @@ public class RegisterMemberUseCase(
 
         await memberRepository.Add(newMember);
         await unitOfWork.CommitAsync();
-        
+
         return new ResponseRegisterMemberJson { Id = newMember.Id };
     }
 }

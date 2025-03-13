@@ -14,7 +14,7 @@ public class RegisterCellUseCase(ICellRepository cellRepository, IUnitOfWork uni
             Id = Guid.NewGuid(),
             Name = request.Name,
             IsActive = request.IsActive,
-            Address = request.Address,
+            Address = request.Address
         };
 
         await cellRepository.AddAsync(cell);

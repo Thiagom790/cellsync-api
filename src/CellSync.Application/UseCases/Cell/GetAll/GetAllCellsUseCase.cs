@@ -14,7 +14,7 @@ public class GetAllCellsUseCase(ICellRepository cellRepository) : IGetAllCellsUs
                 Id = cell.Id,
                 Name = cell.Name,
                 Address = cell.Address,
-                IsActive = cell.IsActive,
+                IsActive = cell.IsActive
             }).ToList();
 
         var response = new ResponseGetAllCellsJson

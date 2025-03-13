@@ -1,6 +1,4 @@
-﻿using CellSync.Domain.Entities;
-
-namespace CellSync.Domain.Repositories.Cell;
+﻿namespace CellSync.Domain.Repositories.Cell;
 
 public interface ICellRepository
 {

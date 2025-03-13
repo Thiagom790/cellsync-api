@@ -1,5 +1,4 @@
 ﻿using CellSync.Communication.Requests;
-using CellSync.Domain.Entities;
 using CellSync.Domain.Repositories;
 using CellSync.Domain.Repositories.Cell;
 
@@ -11,10 +10,7 @@ public class UpdateCellUseCase(ICellRepository cellRepository, IUnitOfWork unitO
     {
         var result = await cellRepository.GetByIdAsync(cellId);
 
-        if (result is null)
-        {
-            throw new Exception("Cell not found");
-        }
+        if (result is null) throw new Exception("Cell not found");
 
         result.Name = request.Name;
         result.IsActive = request.IsActive;

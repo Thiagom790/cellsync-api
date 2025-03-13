@@ -9,17 +9,14 @@ public class GetCellByIdUseCase(ICellRepository cellRepository) : IGetCellByIdUs
     {
         var result = await cellRepository.GetByIdAsync(id);
 
-        if (result is null)
-        {
-            throw new Exception("Cell not found");
-        }
+        if (result is null) throw new Exception("Cell not found");
 
         var response = new ResponseGetCellByIdJson
         {
             Id = result.Id,
             Name = result.Name,
             IsActive = result.IsActive,
-            Address = result.Address,
+            Address = result.Address
         };
 
         return response;
