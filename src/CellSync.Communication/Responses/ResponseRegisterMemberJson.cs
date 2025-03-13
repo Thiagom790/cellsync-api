@@ -2,5 +2,5 @@
 
 public class ResponseRegisterMemberJson
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 }

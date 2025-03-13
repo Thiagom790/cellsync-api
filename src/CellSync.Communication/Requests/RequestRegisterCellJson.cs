@@ -2,7 +2,7 @@
 
 public class RequestRegisterCellJson
 {
-    public string Name { get; set; } = string.Empty;
-    public bool IsActive { get; set; }
-    public string? Address { get; set; }
+    public string Name { get; } = string.Empty;
+    public bool IsActive { get; } = true;
+    public string? Address { get; } = null;
 }

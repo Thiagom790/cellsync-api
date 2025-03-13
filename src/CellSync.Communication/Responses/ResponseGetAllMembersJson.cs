@@ -2,5 +2,5 @@
 
 public class ResponseGetAllMembersJson
 {
-    public List<ResponseMemberJson> Members { get; set; } = [];
+    public List<ResponseMemberJson> Members { get; init; } = [];
 }

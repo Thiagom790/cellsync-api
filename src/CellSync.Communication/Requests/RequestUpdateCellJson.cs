@@ -2,7 +2,7 @@
 
 public class RequestUpdateCellJson
 {
-    public string Name { get; set; } = null!;
-    public bool IsActive { get; set; }
-    public string? Address { get; set; }
+    public string Name { get; } = null!;
+    public bool IsActive { get; } = true;
+    public string? Address { get; } = null;
 }
