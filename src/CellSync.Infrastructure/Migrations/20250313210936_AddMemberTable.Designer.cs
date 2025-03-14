@@ -3,6 +3,7 @@ using System;
 using CellSync.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CellSync.Infrastructure.Migrations
 {
     [DbContext(typeof(CellSyncDbContext))]
-    partial class CellSyncDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250313210936_AddMemberTable")]
+    partial class AddMemberTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,10 +51,6 @@ namespace CellSync.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<string>("MeetingAddress")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<DateTime>("MeetingDate")
                         .HasColumnType("timestamp with time zone");

@@ -9,4 +9,5 @@ public class Member
     public string? Email { get; set; }
     public string? Phone { get; set; }
     public string ProfileType { get; set; } = ProfileTypes.MEMBER;
+    public List<Meeting> Meetings { get; init; } = [];
 }
