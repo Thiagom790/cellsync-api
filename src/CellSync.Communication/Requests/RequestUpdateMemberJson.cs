@@ -2,8 +2,8 @@
 
 public class RequestUpdateMemberJson
 {
-    public string Name { get; } = null!;
-    public string? Email { get; } = null;
-    public string? Phone { get; } = null;
-    public string ProfileType { get; } = string.Empty;
+    public string Name { get; set; } = null!;
+    public string? Email { get; set; } = null;
+    public string? Phone { get; set; } = null;
+    public string ProfileType { get; set; } = string.Empty;
 }

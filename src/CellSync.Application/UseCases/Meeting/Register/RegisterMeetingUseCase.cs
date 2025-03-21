@@ -15,6 +15,7 @@ public class RegisterMeetingUseCase(IMeetingRepository repository, IUnitOfWork u
             Id = Guid.NewGuid(),
             MeetingDate = request.MeetingDate,
             MeetingAddress = request.MeetingAddress,
+            CellId = request.CellId,
         };
 
         var meetingMembers = request.MeetingMembers
@@ -22,7 +23,6 @@ public class RegisterMeetingUseCase(IMeetingRepository repository, IUnitOfWork u
             {
                 MeetingId = meeting.Id,
                 MemberId = requestMember.MemberId,
-                IsLeader = requestMember.IsLeader,
             })
             .ToList();
 
