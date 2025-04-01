@@ -1,4 +1,5 @@
-﻿using CellSync.Application.UseCases.Meeting.Register;
+﻿using CellSync.Application.UseCases.Meeting.GetAll;
+using CellSync.Application.UseCases.Meeting.Register;
 using CellSync.Communication.Requests;
 using CellSync.Communication.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -19,5 +20,16 @@ public class MeetingController : ControllerBase
         var response = await useCase.ExecuteAsync(request);
 
         return Created(string.Empty, response);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(ResponseGetAllMeetingsJson), StatusCodes.Status200OK)]
+    public async Task<ActionResult<ResponseGetAllMeetingsJson>> GetAllMeetings(
+        [FromServices] IGetAllMeetingsUseCase useCase
+    )
+    {
+        var response = await useCase.ExecuteAsync();
+
+        return Ok(response);
     }
 }

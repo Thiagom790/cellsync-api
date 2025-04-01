@@ -17,7 +17,7 @@ public class MemberController : ControllerBase
     public async Task<ActionResult<ResponseGetAllMembersJson>> GetAllMembers(
         [FromServices] IGetAllMembersUseCase useCase)
     {
-        var response = await useCase.Execute();
+        var response = await useCase.ExecuteAsync();
 
         return Ok(response);
     }

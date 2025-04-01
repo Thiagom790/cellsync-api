@@ -4,5 +4,5 @@ namespace CellSync.Application.UseCases.Member.GetAll;
 
 public interface IGetAllMembersUseCase
 {
-    Task<ResponseGetAllMembersJson> Execute();
+    Task<ResponseGetAllMembersJson> ExecuteAsync();
 }
