@@ -8,4 +8,5 @@ public class Meeting
     public Guid CellId { get; init; }
     public Cell Cell { get; init; } = null!;
     public List<Member> Members { get; init; } = [];
+    public List<MeetingMember> MeetingMembers { get; init; } = [];
 }

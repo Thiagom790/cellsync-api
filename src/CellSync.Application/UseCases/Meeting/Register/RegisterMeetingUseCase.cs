@@ -10,24 +10,22 @@ public class RegisterMeetingUseCase(IMeetingRepository repository, IUnitOfWork u
 {
     public async Task<ResponseRegisterMeetingJson> ExecuteAsync(RequestRegisterMeetingJson request)
     {
+        var meetingId = Guid.NewGuid();
+
         var meeting = new Domain.Entities.Meeting
         {
-            Id = Guid.NewGuid(),
+            Id = meetingId,
             MeetingDate = request.MeetingDate,
             MeetingAddress = request.MeetingAddress,
             CellId = request.CellId,
+            MeetingMembers = request.MeetingMembers.Select(meetingMember => new MeetingMember
+            {
+                MeetingId = meetingId,
+                MemberId = meetingMember.MemberId
+            }).ToList(),
         };
 
-        var meetingMembers = request.MeetingMembers
-            .Select(requestMember => new MeetingMember
-            {
-                MeetingId = meeting.Id,
-                MemberId = requestMember.MemberId,
-            })
-            .ToList();
-
         await repository.AddAsync(meeting);
-        await repository.AddMemberInMeetingAsync(meetingMembers);
         await unitOfWork.CommitAsync();
 
         return new ResponseRegisterMeetingJson { Id = meeting.Id };
