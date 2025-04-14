@@ -17,7 +17,9 @@ public class GetAllMembersUseCase(IMemberRepository memberRepository) : IGetAllM
                 Name = member.Name,
                 Email = member.Email,
                 Phone = member.Phone,
-                ProfileType = member.ProfileType
+                ProfileType = member.ProfileType,
+                CreatedAt = member.CreatedAt,
+                UpdatedAt = member.UpdatedAt,
             }).ToList()
         };
 

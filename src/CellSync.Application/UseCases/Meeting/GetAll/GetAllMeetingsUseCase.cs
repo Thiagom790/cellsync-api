@@ -11,12 +11,37 @@ public class GetAllMeetingsUseCase(IMeetingRepository meetingRepository) : IGetA
 
         var response = new ResponseGetAllMeetingsJson
         {
-            Meetings = result.Select(meeting => new MeetingsJson
+            Meetings = result.Select(meeting =>
             {
-                Id = meeting.Id,
-                MeetingDate = meeting.MeetingDate,
-                CellId = meeting.CellId,
-                MeetingAddress = meeting.MeetingAddress,
+                var response = new MeetingsJson
+                {
+                    Id = meeting.Id,
+                    MeetingDate = meeting.MeetingDate,
+                    CellId = meeting.CellId,
+                    MeetingAddress = meeting.MeetingAddress,
+                    CreatedAt = meeting.CreatedAt,
+                    UpdatedAt = meeting.UpdatedAt,
+                };
+
+                if (meeting.Members.Count > 0)
+                {
+                    response.Members = meeting.Members.Select(member => new MeetingsMemberJson
+                    {
+                        Id = member.Id,
+                        Name = member.Name,
+                    }).ToList();
+                }
+
+                if (meeting.Leader is not null)
+                {
+                    response.Leader = new MeetingsMemberJson
+                    {
+                        Id = meeting.Leader.Id,
+                        Name = meeting.Leader.Name,
+                    };
+                }
+
+                return response;
             }).ToList()
         };
 

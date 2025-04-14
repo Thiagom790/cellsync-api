@@ -19,6 +19,7 @@ public class UpdateMemberUseCase(IMemberRepository repository, IUnitOfWork unitO
         member.Email = request.Email;
         member.Phone = request.Phone;
         member.ProfileType = request.ProfileType;
+        member.UpdatedAt = DateTime.UtcNow;
 
         repository.Update(member);
         await unitOfWork.CommitAsync();

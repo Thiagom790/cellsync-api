@@ -2,8 +2,6 @@
 
 public class MeetingMember
 {
-    public Guid MeetingId { get; init; }
-    public Guid MemberId { get; init; }
-    public Meeting Meeting { get; init; } = null!;
-    public Member Member { get; init; } = null!;
+    public Guid MeetingId { get; set; }
+    public Guid MemberId { get; set; }
 }

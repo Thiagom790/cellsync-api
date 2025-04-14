@@ -18,7 +18,9 @@ public class RegisterMemberUseCase(
             Email = request.Email,
             Name = request.Name,
             Phone = request.Phone,
-            ProfileType = request.ProfileType
+            ProfileType = request.ProfileType,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
         };
 
         await memberRepository.Add(newMember);

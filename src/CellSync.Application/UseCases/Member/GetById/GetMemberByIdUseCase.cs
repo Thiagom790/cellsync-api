@@ -20,7 +20,9 @@ public class GetMemberByIdUseCase(IMemberRepository repository) : IGetMemberById
             Name = result.Name,
             Email = result.Email,
             Phone = result.Phone,
-            ProfileType = result.ProfileType
+            ProfileType = result.ProfileType,
+            CreatedAt = result.CreatedAt,
+            UpdatedAt = result.UpdatedAt,
         };
 
         return response;

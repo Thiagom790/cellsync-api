@@ -1,4 +1,5 @@
 ﻿using CellSync.Communication.Requests;
+using CellSync.Domain.Entities;
 using CellSync.Domain.Repositories;
 using CellSync.Domain.Repositories.Cell;
 
@@ -15,6 +16,20 @@ public class UpdateCellUseCase(ICellRepository cellRepository, IUnitOfWork unitO
         result.Name = request.Name;
         result.IsActive = request.IsActive;
         result.Address = request.Address;
+        result.CurrentLeaderId = request.CurrentLeaderId;
+        result.UpdatedAt = DateTime.UtcNow;
+
+        if (request.CurrentLeaderId.HasValue)
+        {
+            result.CellLeaderHistory =
+            [
+                new CellLeaderHistory
+                {
+                    CellId = cellId,
+                    LeaderId = request.CurrentLeaderId.Value,
+                }
+            ];
+        }
 
         cellRepository.Update(result);
 

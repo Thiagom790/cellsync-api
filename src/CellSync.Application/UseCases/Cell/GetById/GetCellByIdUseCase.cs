@@ -16,7 +16,22 @@ public class GetCellByIdUseCase(ICellRepository cellRepository) : IGetCellByIdUs
             Id = result.Id,
             Name = result.Name,
             IsActive = result.IsActive,
-            Address = result.Address
+            Address = result.Address,
+            CreatedAt = result.CreatedAt,
+            UpdatedAt = result.UpdatedAt,
+            CurrentLeader = result.CurrentLeader is not null
+                ? new ResponseLeaderJson
+                {
+                    Id = result.CurrentLeader.Id,
+                    Name = result.CurrentLeader.Name,
+                }
+                : null,
+            LeaderHistory = result.LeaderHistory
+                .Select(leader => new ResponseLeaderJson
+                {
+                    Id = leader.Id,
+                    Name = leader.Name,
+                }).ToList(),
         };
 
         return response;
