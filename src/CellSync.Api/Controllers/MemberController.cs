@@ -36,13 +36,13 @@ public class MemberController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(ResponseRegisterMemberJson), StatusCodes.Status201Created)]
-    public async Task<ActionResult<ResponseRegisterMemberJson>> RegisterMember(
-        [FromBody] RequestRegisterMemberJson request,
+    [ProducesResponseType(typeof(RegisterMemberResponse), StatusCodes.Status201Created)]
+    public async Task<ActionResult<RegisterMemberResponse>> RegisterMember(
+        [FromBody] RegisterMemberRequest registerMemberRequest,
         [FromServices] IRegisterMemberUseCase useCase
     )
     {
-        var response = await useCase.Execute(request);
+        var response = await useCase.Execute(registerMemberRequest);
 
         return Created(string.Empty, response);
     }

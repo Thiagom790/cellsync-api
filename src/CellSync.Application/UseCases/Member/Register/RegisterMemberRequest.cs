@@ -1,6 +1,6 @@
-﻿namespace CellSync.Communication.Requests;
+﻿namespace CellSync.Application.UseCases.Member.Register;
 
-public class RequestRegisterMemberJson
+public class RegisterMemberRequest
 {
     public string Name { get; set; } = null!;
     public string? Email { get; set; }

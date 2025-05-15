@@ -1,5 +1,5 @@
-﻿using CellSync.Communication.Requests;
-using CellSync.Communication.Responses;
+﻿using CellSync.Domain.Enums;
+using CellSync.Domain.Events;
 using CellSync.Domain.Repositories;
 using CellSync.Domain.Repositories.Member;
 
@@ -7,10 +7,11 @@ namespace CellSync.Application.UseCases.Member.Register;
 
 public class RegisterMemberUseCase(
     IMemberRepository memberRepository,
-    IUnitOfWork unitOfWork
+    IUnitOfWork unitOfWork,
+    IEventPublisher eventPublisher
 ) : IRegisterMemberUseCase
 {
-    public async Task<ResponseRegisterMemberJson> Execute(RequestRegisterMemberJson request)
+    public async Task<RegisterMemberResponse> Execute(RegisterMemberRequest request)
     {
         var newMember = new Domain.Entities.Member
         {
@@ -26,6 +27,11 @@ public class RegisterMemberUseCase(
         await memberRepository.Add(newMember);
         await unitOfWork.CommitAsync();
 
-        return new ResponseRegisterMemberJson { Id = newMember.Id };
+        if (newMember.ProfileType == ProfileTypes.VISITOR)
+        {
+            await eventPublisher.PublishAsync(EventsNames.ADD_VISITOR, newMember);
+        }
+
+        return new RegisterMemberResponse { Id = newMember.Id };
     }
 }
