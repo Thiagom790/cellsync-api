@@ -1,4 +1,5 @@
-﻿using CellSync.Application.UseCases.Cell.GetAll;
+﻿using CellSync.Application.EventProcessors;
+using CellSync.Application.UseCases.Cell.GetAll;
 using CellSync.Application.UseCases.Cell.GetById;
 using CellSync.Application.UseCases.Cell.Register;
 using CellSync.Application.UseCases.Cell.Update;

@@ -31,10 +31,11 @@ public static class DependencyInjectionExtension
 
     private static void AddAzureEventHub(IServiceCollection services, IConfiguration configuration)
     {
-        var eventHubConnectionString = configuration.GetValue<string>("AzureEventHub:ConnectionString")!;
-        var eventHubName = configuration.GetValue<string>("AzureEventHub:EventHubName")!;
-        
-        services.AddScoped<IEventPublisher>(_ => new EventHubPublisher(eventHubConnectionString, eventHubName));
+        var eventHubSettings = configuration.GetSection("AzureEventHub").Get<EventHubSettings>();
+
+        services.AddSingleton<IEventHubSettings>(eventHubSettings!);
+        services.AddScoped<IEventPublisher, EventHubPublisher>();
+        services.AddHostedService<EventHubConsumer>();
     }
 
     private static void AddDbContext(IServiceCollection services, IConfiguration configuration)

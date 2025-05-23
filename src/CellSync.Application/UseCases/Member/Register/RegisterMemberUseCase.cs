@@ -29,7 +29,7 @@ public class RegisterMemberUseCase(
 
         if (newMember.ProfileType == ProfileTypes.VISITOR)
         {
-            await eventPublisher.PublishAsync(EventsNames.ADD_VISITOR, newMember);
+            await eventPublisher.PublishAsync(EventNames.ADD_VISITOR, newMember);
         }
 
         return new RegisterMemberResponse { Id = newMember.Id };

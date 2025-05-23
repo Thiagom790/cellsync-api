@@ -6,9 +6,12 @@ using CellSync.Domain.Events;
 
 namespace CellSync.Infrastructure.Events;
 
-public class EventHubPublisher(string connectionString, string eventHubName) : IEventPublisher, IAsyncDisposable
+public class EventHubPublisher(IEventHubSettings settings) : IEventPublisher, IAsyncDisposable
 {
-    private readonly EventHubProducerClient _producerClient = new(connectionString, eventHubName);
+    private readonly EventHubProducerClient _producerClient = new(
+        connectionString: settings.EventHubConnectionString,
+        eventHubName: settings.EventHubName
+    );
 
     public async Task PublishAsync(string eventName, object eventData)
     {

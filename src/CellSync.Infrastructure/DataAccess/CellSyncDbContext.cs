@@ -15,6 +15,8 @@ internal class CellSyncDbContext(DbContextOptions options) : DbContext(options)
 
     public DbSet<CellLeaderHistory> CellsLeaderHistory { get; set; }
 
+    public DbSet<ExecutedEvent> ExecutedEvents { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Cell>()
@@ -43,5 +45,9 @@ internal class CellSyncDbContext(DbContextOptions options) : DbContext(options)
             .HasMany(meeting => meeting.Members)
             .WithMany(member => member.ParticipatedMeetings)
             .UsingEntity<MeetingMember>();
+
+        modelBuilder.Entity<ExecutedEvent>()
+            .Property(e => e.Id)
+            .ValueGeneratedOnAdd();
     }
 }
