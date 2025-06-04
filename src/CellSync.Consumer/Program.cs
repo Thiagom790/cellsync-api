@@ -1,24 +1,25 @@
-﻿using CellSync.Consumer.EventProcessors;
+﻿using CellSync.Consumer;
 using CellSync.Consumer.Helpers;
 using CellSync.Consumer.Services;
-using CellSync.Consumer.Settings;
-using CellSync.Domain.Enums;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-var env = EnvironmentHelpers.GetEnvironmentName();
-
-var config = new ConfigurationBuilder()
-    .SetBasePath(AppContext.BaseDirectory)
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{env}.json", optional: false, reloadOnChange: true)
+var host = Host.CreateDefaultBuilder(args)
+    .ConfigureAppConfiguration((_, config) =>
+    {
+        var env = EnvironmentHelpers.GetEnvironmentName();
+        
+        config.SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true);
+    })
+    .ConfigureServices((hostContext, services) =>
+    {
+        services.AddEventConsumerServices(hostContext.Configuration);
+    })
     .Build();
 
-var azureEventHubSettings = config.GetSection("AzureEventHubSettings").Get<AzureEventHubSettings>();
+var consumer = host.Services.GetRequiredService<AzureEventHubConsumer>();
+await consumer.StartAsync();
 
-var consumer = new AzureEventHubConsumer(azureEventHubSettings!);
-
-var addVisitorProcessor = new AddVisitorEventProcessor();
-
-consumer.Subscribe(EventNames.ADD_VISITOR, addVisitorProcessor);
-
-consumer.StartAsync().GetAwaiter().GetResult();

@@ -1,7 +1,7 @@
 ﻿namespace CellSync.Consumer.Models;
 
-public class AzureEvent<TEventData>
+public class AzureEvent<T>
 {
-    public string? EventName { get; set; }
-    public TEventData? EventData { get; set; }
+    public string EventName { get; set; } = string.Empty;
+    public T? EventData { get; set; }
 }

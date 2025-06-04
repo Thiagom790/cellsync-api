@@ -1,6 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 using Azure.Messaging.EventHubs;
 using Azure.Messaging.EventHubs.Consumer;
@@ -16,9 +14,11 @@ public class AzureEventHubConsumer
 {
     private readonly EventProcessorClient _processor;
     private CancellationTokenSource? _cancellationToken;
-    private readonly ConcurrentDictionary<string, List<object>> _eventProcessors = new();
+    private readonly EventProcessorManager _eventProcessorManager;
+    private readonly Dictionary<string, Type> _eventProcessorTypes;
+   
 
-    public AzureEventHubConsumer(IEventHubSettings eventHubSettings)
+    public AzureEventHubConsumer(IEventHubSettings eventHubSettings, IServiceProvider serviceProvider)
     {
         var storageClient = new BlobContainerClient(
             connectionString: eventHubSettings.StorageConnectionString,
@@ -34,38 +34,53 @@ public class AzureEventHubConsumer
 
         _processor.ProcessEventAsync += ProcessEventHandler;
         _processor.ProcessErrorAsync += ProcessErrorHandler;
+        
+        _eventProcessorManager = new EventProcessorManager(serviceProvider);
+        _eventProcessorTypes = _eventProcessorManager.DiscoverEventProcessors();
     }
 
-    private Task ProcessEventHandler(ProcessEventArgs args)
+    private async Task ProcessEventHandler(ProcessEventArgs args)
     {
-        if (args.CancellationToken.IsCancellationRequested) return Task.CompletedTask;
+        if (args.CancellationToken.IsCancellationRequested) return;
 
         var eventBody = Encoding.UTF8.GetString(args.Data.Body.ToArray());
         var eventObject = JsonSerializer.Deserialize<AzureEvent<object>>(eventBody);
         var eventName = eventObject?.EventName;
 
-        if (string.IsNullOrWhiteSpace(eventName) || eventObject?.EventData is null) return Task.CompletedTask;
+        if (string.IsNullOrWhiteSpace(eventName) || eventObject?.EventData is null) return;
 
-        _eventProcessors.TryGetValue(eventName, out var processors);
+        // Verifica se existe um processador registrado para este evento
+        if (!_eventProcessorTypes.TryGetValue(eventName, out var processorType)) return;
 
-        if (processors is null) return Task.CompletedTask;
-
-        //TODO: VERIFICAR QUAIS OS POSSÍVEL PROBLEMAS DESSE CÓDIGO
-        foreach (var processor in processors)
+        try
         {
-            // REFLECTION https://learn.microsoft.com/pt-br/dotnet/fundamentals/reflection/reflection
-            var processorType = processor.GetType();
-            var eventDataType = processorType.GetInterfaces()[0].GetGenericArguments()[0];
-
+            // Obtém o tipo de dados do evento
+            var eventDataType = _eventProcessorManager.GetEventDataType(processorType);
+            
+            // Deserializa os dados do evento para o tipo correto
             var eventData = JsonSerializer.Deserialize(eventObject.EventData.ToString()!, eventDataType);
+            
+            if (eventData == null) return;
+            
+            // Obtém ou cria uma instância do processador
+            var processor = _eventProcessorManager.GetProcessorInstance(processorType);
+            
+            // Encontra e invoca o método OnReceiveEventAsync
             var method = processorType.GetMethod("OnReceiveEventAsync");
-
-            if (method is null) continue;
-
-            Task.Run(() => method.Invoke(processor, [eventData]));
+            if (method is null) return;
+            
+            // Executa o processador em uma task separada
+            await Task.Run(() => 
+            {
+                var task = (Task)method.Invoke(processor, [eventData])!;
+                return task;
+            });
         }
-
-        return Task.CompletedTask;
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error processing event {eventName}: {ex.Message}");
+            Console.WriteLine(ex);
+        }
     }
 
     private Task ProcessErrorHandler(ProcessErrorEventArgs args)
@@ -76,23 +91,19 @@ public class AzureEventHubConsumer
         return Task.CompletedTask;
     }
 
-    public void Subscribe<TEventData>(string eventName, IEventProcessor<TEventData> processor)
-    {
-        _eventProcessors.AddOrUpdate(eventName, [processor], (_, existingList) =>
-        {
-            existingList.Add(processor);
-            return existingList;
-        });
-    }
-
     public async Task StartAsync()
     {
         try
         {
             Console.WriteLine("Starting Azure Event Hub Consumer");
+            Console.WriteLine($"Discovered {_eventProcessorTypes.Count} event processors:");
+            foreach (var (eventName, processorType) in _eventProcessorTypes)
+            {
+                Console.WriteLine($"- {eventName}: {processorType.Name}");
+            }
+            
             _cancellationToken = new CancellationTokenSource();
             await _processor.StartProcessingAsync(_cancellationToken.Token);
-            // TODO: VERIFICAR SE DAR PARA UTILIZAR COMO IHOSTED SERVICES (https://www.site24x7.com/learn/ihostedservice-and-backgroundservice.html)
             await Task.Delay(Timeout.Infinite, _cancellationToken.Token);
         }
         catch (Exception e)
@@ -118,3 +129,4 @@ public class AzureEventHubConsumer
         _processor.ProcessEventAsync -= ProcessEventHandler;
     }
 }
+

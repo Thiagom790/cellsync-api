@@ -2,6 +2,8 @@
 
 public static class EnvironmentHelpers
 {
-    public static string GetEnvironmentName() =>
-        Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+    public static string GetEnvironmentName()
+        => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+           ?? Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")
+           ?? "Development";
 }
