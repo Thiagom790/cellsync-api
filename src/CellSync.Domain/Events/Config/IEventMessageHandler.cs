@@ -1,4 +1,6 @@
-﻿namespace CellSync.Domain.Events.Messages;
+﻿using CellSync.Domain.Events.Messages;
+
+namespace CellSync.Domain.Events.Config;
 
 public interface IEventMessageHandler
 {

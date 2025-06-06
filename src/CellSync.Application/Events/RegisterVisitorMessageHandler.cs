@@ -1,4 +1,5 @@
-﻿using CellSync.Domain.Events.Messages;
+﻿using CellSync.Domain.Events.Config;
+using CellSync.Domain.Events.Messages;
 
 namespace CellSync.Application.Events;
 
