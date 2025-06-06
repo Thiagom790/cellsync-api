@@ -8,7 +8,7 @@ public class EventProcessorManager(IServiceProvider serviceProvider)
     {
         var eventProcessorsMap = new Dictionary<string, Type>();
 
-        // Busca todos os tipos que implementam IEventProcessor<>
+        // Busca todos os tipos que implementam IEventProcessor<in TEvent>
         var processorTypes = Assembly.GetExecutingAssembly()
             .GetTypes()
             .Where(type =>

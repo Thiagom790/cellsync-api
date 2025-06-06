@@ -1,6 +1,4 @@
-﻿using Azure.Messaging.EventHubs;
-
-namespace CellSync.Consumer.EventProcessors;
+﻿namespace CellSync.Consumer.EventProcessors;
 
 public interface IEventProcessor<in TEvent>
 {

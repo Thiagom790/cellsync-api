@@ -12,5 +12,6 @@ public class AddVisitorEventProcessor : IEventProcessor<Member>
 
         return Task.CompletedTask;
     }
+    
 }
 
