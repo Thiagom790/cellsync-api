@@ -1,11 +1,11 @@
-﻿using System.Collections.Concurrent;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 using Azure.Messaging.EventHubs;
 using Azure.Messaging.EventHubs.Consumer;
 using Azure.Messaging.EventHubs.Processor;
 using Azure.Storage.Blobs;
-using CellSync.Domain.Events;
+using CellSync.Domain.Events.Config;
+using CellSync.Domain.Events.Messages;
 using Microsoft.Extensions.Hosting;
 
 namespace CellSync.Infrastructure.Events;
@@ -13,10 +13,12 @@ namespace CellSync.Infrastructure.Events;
 public class EventHubConsumer : BackgroundService
 {
     private readonly EventProcessorClient _processor;
-    private readonly ConcurrentDictionary<string, List<object>> _eventProcessors = new();
+    private readonly IEventDispatcher _dispatcher;
 
-    public EventHubConsumer(IEventHubSettings settings)
+    public EventHubConsumer(IEventHubSettings settings, IEventDispatcher dispatcher)
     {
+        _dispatcher = dispatcher;
+
         var storageClient = new BlobContainerClient(
             connectionString: settings.StorageConnectionString,
             blobContainerName: settings.StorageContainerName
@@ -33,41 +35,20 @@ public class EventHubConsumer : BackgroundService
         _processor.ProcessErrorAsync += ProcessErrorHandler;
     }
 
-    private Task ProcessEventHandler(ProcessEventArgs args)
+    private async Task ProcessEventHandler(ProcessEventArgs args)
     {
-        if (args.CancellationToken.IsCancellationRequested) return Task.CompletedTask;
+        if (args.CancellationToken.IsCancellationRequested) return;
 
-        var eventBody = Encoding.UTF8.GetString(args.Data.Body.ToArray());
-        
-        Console.WriteLine("Backaground");
-        Console.WriteLine(eventBody);
-        
-        //FIX: NÃO FUNCIONA
-        // var eventObject = JsonSerializer.Deserialize<AzureEvent<object>>(eventBody);
-        // var eventName = eventObject?.EventName;
-        //
-        // if (string.IsNullOrWhiteSpace(eventName) || eventObject?.EventData is null) return Task.CompletedTask;
-        //
-        // _eventProcessors.TryGetValue(eventName, out var processors);
-        //
-        // if (processors is null) return Task.CompletedTask;
-        //
-        // //TODO: VERIFICAR QUAIS OS POSSÍVEL PROBLEMAS DESSE CÓDIGO
-        // foreach (var processor in processors)
-        // {
-        //     // REFLECTION https://learn.microsoft.com/pt-br/dotnet/fundamentals/reflection/reflection
-        //     var processorType = processor.GetType();
-        //     var eventDataType = processorType.GetInterfaces()[0].GetGenericArguments()[0];
-        //
-        //     var eventData = JsonSerializer.Deserialize(eventObject.EventData.ToString()!, eventDataType);
-        //     var method = processorType.GetMethod("OnReceiveEventAsync");
-        //
-        //     if (method is null) continue;
-        //
-        //     Task.Run(() => method.Invoke(processor, [eventData]));
-        // }
+        using var json = JsonDocument.Parse(Encoding.UTF8.GetString(args.Data.Body.ToArray()));
+        var eventName = json.RootElement.GetProperty("EventType").GetString();
+        var rawEventData = json.RootElement.GetProperty("EventData");
+        var eventType = _dispatcher.GetMessageType(eventName);
 
-        return Task.CompletedTask;
+        if (eventType is null) return;
+
+        var message = (IEventMessage)rawEventData.Deserialize(eventType)!;
+
+        await _dispatcher.DispatchAsync(message);
     }
 
     private static Task ProcessErrorHandler(ProcessErrorEventArgs args)
@@ -76,16 +57,6 @@ public class EventHubConsumer : BackgroundService
         Console.WriteLine(args.Exception.ToString());
 
         return Task.CompletedTask;
-    }
-
-    //FIX: NÃO FUNCIONA 
-    public void Subscribe<TEventData>(string eventName, IEventProcessor<TEventData> processor)
-    {
-        _eventProcessors.AddOrUpdate(eventName, [processor], (_, existingList) =>
-        {
-            existingList.Add(processor);
-            return existingList;
-        });
     }
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)

@@ -1,5 +1,6 @@
 ﻿using CellSync.Domain.Enums;
-using CellSync.Domain.Events;
+using CellSync.Domain.Events.Config;
+using CellSync.Domain.Events.Messages;
 using CellSync.Domain.Repositories;
 using CellSync.Domain.Repositories.Member;
 
@@ -29,7 +30,13 @@ public class RegisterMemberUseCase(
 
         if (newMember.ProfileType == ProfileTypes.VISITOR)
         {
-            await eventPublisher.PublishAsync(EventNames.ADD_VISITOR, newMember);
+            await eventPublisher.PublishAsync(new RegisterVisitorEventMessage
+            {
+                Email = newMember.Email,
+                Name = newMember.Name,
+                Phone = newMember.Phone,
+                Id = newMember.Id,
+            });
         }
 
         return new RegisterMemberResponse { Id = newMember.Id };

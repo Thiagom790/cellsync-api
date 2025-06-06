@@ -1,4 +1,4 @@
-﻿using CellSync.Domain.Events;
+﻿using CellSync.Domain.Events.Config;
 using CellSync.Domain.Repositories;
 using CellSync.Domain.Repositories.Cell;
 using CellSync.Domain.Repositories.Meeting;

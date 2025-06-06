@@ -2,7 +2,8 @@
 using System.Text.Json;
 using Azure.Messaging.EventHubs;
 using Azure.Messaging.EventHubs.Producer;
-using CellSync.Domain.Events;
+using CellSync.Domain.Events.Config;
+using CellSync.Domain.Events.Messages;
 
 namespace CellSync.Infrastructure.Events;
 
@@ -13,10 +14,10 @@ public class EventHubPublisher(IEventHubSettings settings) : IEventPublisher, IA
         eventHubName: settings.EventHubName
     );
 
-    public async Task PublishAsync(string eventName, object eventData)
+    public async Task PublishAsync<TMessage>(TMessage message) where TMessage : IEventMessage
     {
         using var eventBatch = await _producerClient.CreateBatchAsync();
-        var eventBody = JsonSerializer.Serialize(new { EventName = eventName, EventData = eventData });
+        var eventBody = JsonSerializer.Serialize(new { EventType = message.MessageType, EventData = message });
         eventBatch.TryAdd(new EventData(Encoding.UTF8.GetBytes(eventBody)));
 
         await _producerClient.SendAsync(eventBatch);
