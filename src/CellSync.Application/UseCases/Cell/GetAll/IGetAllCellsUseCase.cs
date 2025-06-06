@@ -1,8 +1,6 @@
-﻿using CellSync.Communication.Responses;
-
-namespace CellSync.Application.UseCases.Cell.GetAll;
+﻿namespace CellSync.Application.UseCases.Cell.GetAll;
 
 public interface IGetAllCellsUseCase
 {
-    Task<ResponseGetAllCellsJson> ExecuteAsync();
+    Task<GetAllCellsResponse> ExecuteAsync();
 }

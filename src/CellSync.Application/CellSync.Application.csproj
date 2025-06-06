@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CellSync.Communication\CellSync.Communication.csproj"/>
         <ProjectReference Include="..\CellSync.Domain\CellSync.Domain.csproj"/>
     </ItemGroup>
 

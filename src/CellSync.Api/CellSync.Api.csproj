@@ -23,7 +23,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\CellSync.Application\CellSync.Application.csproj"/>
-        <ProjectReference Include="..\CellSync.Communication\CellSync.Communication.csproj"/>
         <ProjectReference Include="..\CellSync.Infrastructure\CellSync.Infrastructure.csproj"/>
     </ItemGroup>
 

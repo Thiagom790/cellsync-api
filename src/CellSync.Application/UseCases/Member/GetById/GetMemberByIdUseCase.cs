@@ -1,11 +1,10 @@
-﻿using CellSync.Communication.Responses;
-using CellSync.Domain.Repositories.Member;
+﻿using CellSync.Domain.Repositories.Member;
 
 namespace CellSync.Application.UseCases.Member.GetById;
 
 public class GetMemberByIdUseCase(IMemberRepository repository) : IGetMemberByIdUseCase
 {
-    public async Task<ResponseGetMemberByIdJson> ExecuteAsync(Guid id)
+    public async Task<GetMemberByIdResponse> ExecuteAsync(Guid id)
     {
         var result = await repository.GetById(id);
 
@@ -14,7 +13,7 @@ public class GetMemberByIdUseCase(IMemberRepository repository) : IGetMemberById
             throw new Exception("Member not found");
         }
 
-        var response = new ResponseGetMemberByIdJson
+        var response = new GetMemberByIdResponse
         {
             Id = result.Id,
             Name = result.Name,

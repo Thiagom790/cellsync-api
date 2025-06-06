@@ -2,8 +2,6 @@
 using CellSync.Application.UseCases.Cell.GetById;
 using CellSync.Application.UseCases.Cell.Register;
 using CellSync.Application.UseCases.Cell.Update;
-using CellSync.Communication.Requests;
-using CellSync.Communication.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CellSync.Api.Controllers;
@@ -13,22 +11,22 @@ namespace CellSync.Api.Controllers;
 public class CellController : ControllerBase
 {
     [HttpPost]
-    [ProducesResponseType(typeof(ResponseRegisterCellJson), StatusCodes.Status201Created)]
-    public async Task<ActionResult<RequestRegisterCellJson>> RegisterCell(
-        [FromBody] RequestRegisterCellJson request,
+    [ProducesResponseType(typeof(RegisterCellResponse), StatusCodes.Status201Created)]
+    public async Task<ActionResult<RegisterCellRequest>> RegisterCell(
+        [FromBody] RegisterCellRequest registerCellRequest,
         [FromServices] IRegisterCellUseCase useCase
     )
     {
-        var response = await useCase.ExecuteAsync(request);
+        var response = await useCase.ExecuteAsync(registerCellRequest);
 
         return Created(string.Empty, response);
     }
 
     [HttpGet]
     [Route("{id:guid}")]
-    [ProducesResponseType(typeof(ResponseGetCellByIdJson), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetCellByIdResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ResponseGetCellByIdJson>> GetCellById(
+    public async Task<ActionResult<GetCellByIdResponse>> GetCellById(
         [FromRoute] Guid id,
         [FromServices] IGetCellByIdUseCase useCase
     )
@@ -39,8 +37,8 @@ public class CellController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(ResponseGetAllCellsJson), StatusCodes.Status200OK)]
-    public async Task<ActionResult<ResponseGetAllCellsJson>> GetAllCells(
+    [ProducesResponseType(typeof(GetAllCellsResponse), StatusCodes.Status200OK)]
+    public async Task<ActionResult<GetAllCellsResponse>> GetAllCells(
         [FromServices] IGetAllCellsUseCase useCase)
     {
         var response = await useCase.ExecuteAsync();
@@ -54,10 +52,10 @@ public class CellController : ControllerBase
     public async Task<ActionResult> UpdateCell(
         [FromServices] IUpdateCellUseCase useCase,
         [FromRoute] Guid id,
-        [FromBody] RequestUpdateCellJson request
+        [FromBody] UpdateCellRequest updateCellRequest
     )
     {
-        await useCase.ExecuteAsync(id, request);
+        await useCase.ExecuteAsync(id, updateCellRequest);
 
         return NoContent();
     }

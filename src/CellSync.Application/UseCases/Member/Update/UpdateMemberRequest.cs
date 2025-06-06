@@ -1,6 +1,6 @@
-﻿namespace CellSync.Communication.Requests;
+﻿namespace CellSync.Application.UseCases.Member.Update;
 
-public class RequestUpdateMemberJson
+public class UpdateMemberRequest
 {
     public string Name { get; set; } = null!;
     public string? Email { get; set; }

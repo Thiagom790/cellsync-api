@@ -1,12 +1,11 @@
-﻿using CellSync.Communication.Requests;
-using CellSync.Domain.Repositories;
+﻿using CellSync.Domain.Repositories;
 using CellSync.Domain.Repositories.Member;
 
 namespace CellSync.Application.UseCases.Member.Update;
 
 public class UpdateMemberUseCase(IMemberRepository repository, IUnitOfWork unitOfWork) : IUpdateMemberUseCase
 {
-    public async Task ExecuteAsync(Guid memberId, RequestUpdateMemberJson request)
+    public async Task ExecuteAsync(Guid memberId, UpdateMemberRequest updateMemberRequest)
     {
         var member = await repository.GetById(memberId);
 
@@ -15,10 +14,10 @@ public class UpdateMemberUseCase(IMemberRepository repository, IUnitOfWork unitO
             throw new Exception($"Member with id {memberId} not found");
         }
 
-        member.Name = request.Name;
-        member.Email = request.Email;
-        member.Phone = request.Phone;
-        member.ProfileType = request.ProfileType;
+        member.Name = updateMemberRequest.Name;
+        member.Email = updateMemberRequest.Email;
+        member.Phone = updateMemberRequest.Phone;
+        member.ProfileType = updateMemberRequest.ProfileType;
         member.UpdatedAt = DateTime.UtcNow;
 
         repository.Update(member);

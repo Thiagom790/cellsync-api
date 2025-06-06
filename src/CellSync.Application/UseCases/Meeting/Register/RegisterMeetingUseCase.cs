@@ -1,6 +1,4 @@
-﻿using CellSync.Communication.Requests;
-using CellSync.Communication.Responses;
-using CellSync.Domain.Entities;
+﻿using CellSync.Domain.Entities;
 using CellSync.Domain.Repositories;
 using CellSync.Domain.Repositories.Cell;
 using CellSync.Domain.Repositories.Meeting;
@@ -13,9 +11,9 @@ public class RegisterMeetingUseCase(
     IUnitOfWork unitOfWork
 ) : IRegisterMeetingUseCase
 {
-    public async Task<ResponseRegisterMeetingJson> ExecuteAsync(RequestRegisterMeetingJson request)
+    public async Task<RegisterMeetingResponse> ExecuteAsync(RegisterMeetingRequest registerMeetingRequest)
     {
-        var cell = await cellRepository.GetByIdAsync(request.CellId);
+        var cell = await cellRepository.GetByIdAsync(registerMeetingRequest.CellId);
 
         if (cell is null)
         {
@@ -27,13 +25,13 @@ public class RegisterMeetingUseCase(
         var meeting = new Domain.Entities.Meeting
         {
             Id = meetingId,
-            MeetingDate = request.MeetingDate,
-            MeetingAddress = request.MeetingAddress,
+            MeetingDate = registerMeetingRequest.MeetingDate,
+            MeetingAddress = registerMeetingRequest.MeetingAddress,
             CellId = cell.Id,
             LeaderId = cell.CurrentLeaderId,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            MeetingMembers = request.MeetingMembers.Select(meetingMember => new MeetingMember
+            MeetingMembers = registerMeetingRequest.MeetingMembers.Select(meetingMember => new MeetingMember
             {
                 MeetingId = meetingId,
                 MemberId = meetingMember.MemberId
@@ -43,6 +41,6 @@ public class RegisterMeetingUseCase(
         await meetingRepository.AddAsync(meeting);
         await unitOfWork.CommitAsync();
 
-        return new ResponseRegisterMeetingJson { Id = meeting.Id };
+        return new RegisterMeetingResponse { Id = meeting.Id };
     }
 }

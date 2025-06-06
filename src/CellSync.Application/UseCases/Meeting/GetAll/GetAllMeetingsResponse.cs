@@ -1,11 +1,11 @@
-﻿namespace CellSync.Communication.Responses;
+﻿namespace CellSync.Application.UseCases.Meeting.GetAll;
 
-public class ResponseGetAllMeetingsJson
+public class GetAllMeetingsResponse
 {
-    public List<MeetingsJson> Meetings { get; set; } = [];
+    public List<MeetingsResponse> Meetings { get; set; } = [];
 }
 
-public class MeetingsJson
+public class MeetingsResponse
 {
     public Guid Id { get; set; }
     public DateTime MeetingDate { get; set; }
@@ -13,11 +13,11 @@ public class MeetingsJson
     public Guid CellId { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public MeetingsMemberJson? Leader { get; set; }
-    public List<MeetingsMemberJson> Members { get; set; } = [];
+    public MeetingsMemberResponse? Leader { get; set; }
+    public List<MeetingsMemberResponse> Members { get; set; } = [];
 }
 
-public class MeetingsMemberJson
+public class MeetingsMemberResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;

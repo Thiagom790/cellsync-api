@@ -1,19 +1,18 @@
-﻿using CellSync.Communication.Responses;
-using CellSync.Domain.Repositories.Meeting;
+﻿using CellSync.Domain.Repositories.Meeting;
 
 namespace CellSync.Application.UseCases.Meeting.GetAll;
 
 public class GetAllMeetingsUseCase(IMeetingRepository meetingRepository) : IGetAllMeetingsUseCase
 {
-    public async Task<ResponseGetAllMeetingsJson> ExecuteAsync()
+    public async Task<GetAllMeetingsResponse> ExecuteAsync()
     {
         var result = await meetingRepository.GetAllAsync();
 
-        var response = new ResponseGetAllMeetingsJson
+        var response = new GetAllMeetingsResponse
         {
             Meetings = result.Select(meeting =>
             {
-                var response = new MeetingsJson
+                var response = new MeetingsResponse
                 {
                     Id = meeting.Id,
                     MeetingDate = meeting.MeetingDate,
@@ -25,7 +24,7 @@ public class GetAllMeetingsUseCase(IMeetingRepository meetingRepository) : IGetA
 
                 if (meeting.Members.Count > 0)
                 {
-                    response.Members = meeting.Members.Select(member => new MeetingsMemberJson
+                    response.Members = meeting.Members.Select(member => new MeetingsMemberResponse
                     {
                         Id = member.Id,
                         Name = member.Name,
@@ -34,7 +33,7 @@ public class GetAllMeetingsUseCase(IMeetingRepository meetingRepository) : IGetA
 
                 if (meeting.Leader is not null)
                 {
-                    response.Leader = new MeetingsMemberJson
+                    response.Leader = new MeetingsMemberResponse
                     {
                         Id = meeting.Leader.Id,
                         Name = meeting.Leader.Name,

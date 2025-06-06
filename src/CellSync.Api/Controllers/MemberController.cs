@@ -2,8 +2,6 @@
 using CellSync.Application.UseCases.Member.GetById;
 using CellSync.Application.UseCases.Member.Register;
 using CellSync.Application.UseCases.Member.Update;
-using CellSync.Communication.Requests;
-using CellSync.Communication.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CellSync.Api.Controllers;
@@ -13,8 +11,8 @@ namespace CellSync.Api.Controllers;
 public class MemberController : ControllerBase
 {
     [HttpGet]
-    [ProducesResponseType(typeof(ResponseGetAllMembersJson), StatusCodes.Status200OK)]
-    public async Task<ActionResult<ResponseGetAllMembersJson>> GetAllMembers(
+    [ProducesResponseType(typeof(GetAllMembersResponse), StatusCodes.Status200OK)]
+    public async Task<ActionResult<GetAllMembersResponse>> GetAllMembers(
         [FromServices] IGetAllMembersUseCase useCase)
     {
         var response = await useCase.ExecuteAsync();
@@ -24,8 +22,8 @@ public class MemberController : ControllerBase
 
     [HttpGet]
     [Route("{id:guid}")]
-    [ProducesResponseType(typeof(ResponseGetMemberByIdJson), StatusCodes.Status200OK)]
-    public async Task<ActionResult<ResponseGetMemberByIdJson>> GetMemberById(
+    [ProducesResponseType(typeof(GetMemberByIdResponse), StatusCodes.Status200OK)]
+    public async Task<ActionResult<GetMemberByIdResponse>> GetMemberById(
         [FromRoute] Guid id,
         [FromServices] IGetMemberByIdUseCase useCase
     )
@@ -52,11 +50,11 @@ public class MemberController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> UpdateMember(
         [FromRoute] Guid id,
-        [FromBody] RequestUpdateMemberJson request,
+        [FromBody] UpdateMemberRequest updateMemberRequest,
         [FromServices] IUpdateMemberUseCase useCase
     )
     {
-        await useCase.ExecuteAsync(id, request);
+        await useCase.ExecuteAsync(id, updateMemberRequest);
 
         return NoContent();
     }

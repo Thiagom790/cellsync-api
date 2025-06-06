@@ -1,8 +1,8 @@
-﻿namespace CellSync.Communication.Requests;
+﻿namespace CellSync.Application.UseCases.Cell.Update;
 
-public class RequestRegisterCellJson
+public class UpdateCellRequest
 {
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } = null!;
     public bool IsActive { get; set; } = true;
     public string? Address { get; set; }
     public Guid? CurrentLeaderId { get; set; }

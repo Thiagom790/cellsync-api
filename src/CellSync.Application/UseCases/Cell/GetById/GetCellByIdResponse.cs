@@ -1,6 +1,6 @@
-﻿namespace CellSync.Communication.Responses;
+﻿namespace CellSync.Application.UseCases.Cell.GetById;
 
-public class ResponseGetCellByIdJson
+public class GetCellByIdResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = null!;
@@ -8,11 +8,11 @@ public class ResponseGetCellByIdJson
     public string? Address { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public ResponseLeaderJson? CurrentLeader { get; set; }
-    public List<ResponseLeaderJson> LeaderHistory { get; set; } = [];
+    public LeaderResponse? CurrentLeader { get; set; }
+    public List<LeaderResponse> LeaderHistory { get; set; } = [];
 }
 
-public class ResponseLeaderJson
+public class LeaderResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;

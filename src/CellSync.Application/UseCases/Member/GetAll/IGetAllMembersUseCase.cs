@@ -1,8 +1,6 @@
-﻿using CellSync.Communication.Responses;
-
-namespace CellSync.Application.UseCases.Member.GetAll;
+﻿namespace CellSync.Application.UseCases.Member.GetAll;
 
 public interface IGetAllMembersUseCase
 {
-    Task<ResponseGetAllMembersJson> ExecuteAsync();
+    Task<GetAllMembersResponse> ExecuteAsync();
 }

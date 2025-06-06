@@ -1,17 +1,16 @@
-﻿using CellSync.Communication.Responses;
-using CellSync.Domain.Repositories.Cell;
+﻿using CellSync.Domain.Repositories.Cell;
 
 namespace CellSync.Application.UseCases.Cell.GetAll;
 
 public class GetAllCellsUseCase(ICellRepository cellRepository) : IGetAllCellsUseCase
 {
-    public async Task<ResponseGetAllCellsJson> ExecuteAsync()
+    public async Task<GetAllCellsResponse> ExecuteAsync()
     {
         var result = await cellRepository.GetAllAsync();
 
-        var response = new ResponseGetAllCellsJson
+        var response = new GetAllCellsResponse
         {
-            Cells = result.Select(cell => new ResponseCellJson
+            Cells = result.Select(cell => new CellResponse
             {
                 Id = cell.Id,
                 Name = cell.Name,

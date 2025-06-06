@@ -1,6 +1,6 @@
-﻿namespace CellSync.Communication.Responses;
+﻿namespace CellSync.Application.UseCases.Member.GetById;
 
-public class ResponseGetMemberByIdJson
+public class GetMemberByIdResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = null!;

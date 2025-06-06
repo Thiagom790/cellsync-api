@@ -1,11 +1,11 @@
-﻿namespace CellSync.Communication.Responses;
+﻿namespace CellSync.Application.UseCases.Cell.GetAll;
 
-public class ResponseGetAllCellsJson
+public class GetAllCellsResponse
 {
-    public List<ResponseCellJson> Cells { get; set; } = [];
+    public List<CellResponse> Cells { get; set; } = [];
 }
 
-public class ResponseCellJson
+public class CellResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = null!;
