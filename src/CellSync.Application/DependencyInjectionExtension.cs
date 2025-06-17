@@ -10,6 +10,7 @@ using CellSync.Application.UseCases.Member.GetById;
 using CellSync.Application.UseCases.Member.Register;
 using CellSync.Application.UseCases.Member.Update;
 using CellSync.Domain.Events.Config;
+using CellSync.Domain.Events.Messages;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CellSync.Application;
@@ -38,7 +39,7 @@ public static class DependencyInjectionExtension
 
     private static void AddEventHandlers(IServiceCollection service)
     {
-        service.AddScoped<RegisterVisitorMessageHandler>();
+        service.AddScoped<IEventMessageHandler<RegisterVisitorEventMessage>, RegisterVisitorMessageHandler>();
         service.AddSingleton<IEventDispatcher, EventDispatcher>();
     }
 }

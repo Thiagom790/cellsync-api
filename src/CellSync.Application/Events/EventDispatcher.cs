@@ -7,50 +7,58 @@ namespace CellSync.Application.Events;
 
 public class EventDispatcher(IServiceProvider serviceProvider) : IEventDispatcher
 {
-    private readonly Dictionary<string, Type> _handlers = RegisterHandlers();
-    private readonly Dictionary<string, Type> _messageTypes = RegisterMessageTypes();
+    private readonly Dictionary<string, Type> _messageTypes = GetMessageTypes();
 
-    private static Dictionary<string, Type> RegisterHandlers()
+    private static Dictionary<string, Type> GetMessageTypes()
     {
-        var handlerTypes = typeof(IEventMessageHandler);
+        var handlerInterface = typeof(IEventMessageHandler<>);
 
-        return Assembly.GetExecutingAssembly()
+        var handlerClasses = Assembly.GetExecutingAssembly()
             .GetTypes()
-            .Where(type => handlerTypes.IsAssignableFrom(type) && type is { IsClass: true, IsAbstract: false })
-            .ToDictionary(
-                type => ((Type)type.GetProperty(nameof(IEventMessageHandler.MessageType))!.GetValue(null)!).Name,
-                type => type
-            );
+            .Where(type =>
+                type is { IsClass: true, IsAbstract: false } &&
+                type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == handlerInterface)
+            )
+            .ToList();
+
+        var messageTypes = handlerClasses
+            .Select(type => new
+            {
+                EventName = type.GetCustomAttribute<EventMessageHandleAttribute>()?.EventName,
+                MessageType = type.GetInterfaces()
+                    .First(i => i.IsGenericType && i.GetGenericTypeDefinition() == handlerInterface)
+                    .GetGenericArguments()
+                    .FirstOrDefault()
+            })
+            .Where(x => x.EventName is not null && x.MessageType is not null)
+            .ToDictionary(x => x.EventName!, x => x.MessageType!);
+
+        return messageTypes;
     }
 
-    private static Dictionary<string, Type> RegisterMessageTypes()
+    public async Task DispatchAsync(string eventType, IEventMessage message)
     {
-        var messageTypes = typeof(IEventMessage);
+        if (!_messageTypes.TryGetValue(eventType, out var messageType))
+        {
+            Console.WriteLine($"No handler registered for event type {eventType}");
+            return;
+        }
 
-        return messageTypes.Assembly.DefinedTypes
-            .Where(type => messageTypes.IsAssignableFrom(type) && type is { IsAbstract: false, IsInterface: false })
-            .ToDictionary(
-                type => (string)type.GetProperty(nameof(IEventMessage.MessageType))!.GetValue(
-                    Activator.CreateInstance(type))!,
-                type => type.AsType()
-            );
+        using var scope = serviceProvider.CreateScope();
+
+        var interfaceType = typeof(IEventMessageHandler<>).MakeGenericType(messageType);
+        dynamic? handlerInstance = scope.ServiceProvider.GetService(interfaceType);
+
+        if (handlerInstance is null)
+        {
+            Console.WriteLine($"No handler instance found for event type {eventType}");
+            return;
+        }
+
+        await handlerInstance.OnReceiveEventAsync((dynamic)message);
     }
 
-    public async Task DispatchAsync(IEventMessage message)
-    {
-        if (_handlers.TryGetValue(message.GetType().Name, out var handlerType))
-        {
-            using var scope = serviceProvider.CreateScope();
-            var handlerInstance = (IEventMessageHandler)scope.ServiceProvider.GetRequiredService(handlerType);
-            await handlerInstance.HandleAsync(message);
-        }
-        else
-        {
-            Console.WriteLine($"No handler for type {message.GetType().Name}");
-        }
-    }
-
-    public Type? GetMessageType(string? messageTypeName) => string.IsNullOrWhiteSpace(messageTypeName)
+    public Type? GetMessageType(string? eventType) => string.IsNullOrWhiteSpace(eventType)
         ? null
-        : _messageTypes.GetValueOrDefault(messageTypeName);
+        : _messageTypes.GetValueOrDefault(eventType);
 }

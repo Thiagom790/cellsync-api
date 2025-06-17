@@ -4,5 +4,5 @@ namespace CellSync.Domain.Events.Config;
 
 public interface IEventPublisher
 {
-    Task PublishAsync<TMessage>(TMessage message) where TMessage : IEventMessage;
+    Task PublishAsync<TEventMessage>(string eventType, TEventMessage message) where TEventMessage : IEventMessage;
 }

@@ -4,7 +4,7 @@ namespace CellSync.Domain.Events.Config;
 
 public interface IEventDispatcher
 {
-    public Task DispatchAsync(IEventMessage message);
+    public Task DispatchAsync(string eventType, IEventMessage message);
 
-    public Type? GetMessageType(string? messageTypeName);
+    public Type? GetMessageType(string? eventType);
 }

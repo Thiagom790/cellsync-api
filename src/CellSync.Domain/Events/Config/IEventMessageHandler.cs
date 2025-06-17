@@ -2,9 +2,7 @@
 
 namespace CellSync.Domain.Events.Config;
 
-public interface IEventMessageHandler
+public interface IEventMessageHandler<in TEventMessage> where TEventMessage : IEventMessage
 {
-    public Task HandleAsync(IEventMessage eventData);
-
-    public static abstract Type MessageType { get; }
+    public Task OnReceiveEventAsync(TEventMessage eventData);
 }

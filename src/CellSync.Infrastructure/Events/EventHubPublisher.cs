@@ -14,10 +14,11 @@ public class EventHubPublisher(IEventHubSettings settings) : IEventPublisher, IA
         eventHubName: settings.EventHubName
     );
 
-    public async Task PublishAsync<TMessage>(TMessage message) where TMessage : IEventMessage
+    public async Task PublishAsync<TEventMessage>(string eventType, TEventMessage message)
+        where TEventMessage : IEventMessage
     {
         using var eventBatch = await _producerClient.CreateBatchAsync();
-        var eventBody = JsonSerializer.Serialize(new { EventType = message.MessageType, EventData = message });
+        var eventBody = JsonSerializer.Serialize(new { EventType = eventType, EventData = message });
         eventBatch.TryAdd(new EventData(Encoding.UTF8.GetBytes(eventBody)));
 
         await _producerClient.SendAsync(eventBatch);

@@ -1,18 +1,16 @@
-﻿using CellSync.Domain.Events.Config;
+﻿using CellSync.Domain.Enums;
+using CellSync.Domain.Events.Config;
 using CellSync.Domain.Events.Messages;
 
 namespace CellSync.Application.Events;
 
-public class RegisterVisitorMessageHandler : IEventMessageHandler
+[EventMessageHandle(EventNames.REGISTER_VISITOR)]
+public class RegisterVisitorMessageHandler : IEventMessageHandler<RegisterVisitorEventMessage>
 {
-    public Task HandleAsync(IEventMessage eventData)
+    public Task OnReceiveEventAsync(RegisterVisitorEventMessage eventData)
     {
-        var message = (RegisterVisitorEventMessage)eventData;
-
-        Console.WriteLine($"Registered visitor {message.Name}");
+        Console.WriteLine($"Registered visitor {eventData.Name}");
 
         return Task.CompletedTask;
     }
-
-    public static Type MessageType { get; } = typeof(RegisterVisitorEventMessage);
 }

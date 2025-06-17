@@ -44,11 +44,11 @@ public class EventHubConsumer : BackgroundService
         var rawEventData = json.RootElement.GetProperty("EventData");
         var eventType = _dispatcher.GetMessageType(eventName);
 
-        if (eventType is null) return;
+        if (eventType is null || eventName is null) return;
 
         var message = (IEventMessage)rawEventData.Deserialize(eventType)!;
 
-        await _dispatcher.DispatchAsync(message);
+        await _dispatcher.DispatchAsync(eventName, message);
     }
 
     private static Task ProcessErrorHandler(ProcessErrorEventArgs args)
