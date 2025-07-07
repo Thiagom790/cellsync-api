@@ -9,7 +9,7 @@ public class RegisterVisitorMessageHandler : IEventMessageHandler<RegisterVisito
 {
     public Task OnReceiveEventAsync(RegisterVisitorEventMessage eventData)
     {
-        Console.WriteLine($"Registered visitor {eventData.Name}");
+        Console.WriteLine($"Registered visitor handler {eventData.Name}");
 
         return Task.CompletedTask;
     }
