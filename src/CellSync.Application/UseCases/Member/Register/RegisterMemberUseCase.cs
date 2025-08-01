@@ -12,7 +12,7 @@ public class RegisterMemberUseCase(
     IEventPublisher eventPublisher
 ) : IRegisterMemberUseCase
 {
-    public async Task<RegisterMemberResponse> Execute(RegisterMemberRequest request)
+    public async Task<RegisterMemberResponse> ExecuteAsync(RegisterMemberRequest request)
     {
         var newMember = new Domain.Entities.Member
         {
@@ -25,12 +25,12 @@ public class RegisterMemberUseCase(
             UpdatedAt = DateTime.UtcNow,
         };
 
-        await memberRepository.Add(newMember);
+        await memberRepository.AddAsync(newMember);
         await unitOfWork.CommitAsync();
 
         if (newMember.ProfileType == ProfileTypes.VISITOR)
         {
-            await eventPublisher.PublishAsync(
+            _ = eventPublisher.PublishAsync(
                 EventNames.REGISTER_VISITOR,
                 new RegisterVisitorEventMessage
                 {

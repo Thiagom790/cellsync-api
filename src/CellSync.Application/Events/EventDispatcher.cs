@@ -5,36 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CellSync.Application.Events;
 
-public class EventDispatcher(IServiceProvider serviceProvider) : IEventDispatcher
+public class EventDispatcher(IServiceProvider serviceProvider, IEventMessageHandlerMapProvider mapProvider)
+    : IEventDispatcher
 {
-    private readonly Dictionary<string, Type> _messageTypes = GetMessageTypes();
-
-    private static Dictionary<string, Type> GetMessageTypes()
-    {
-        var handlerInterface = typeof(IEventMessageHandler<>);
-
-        var handlerClasses = Assembly.GetExecutingAssembly()
-            .GetTypes()
-            .Where(type =>
-                type is { IsClass: true, IsAbstract: false } &&
-                type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == handlerInterface)
-            )
-            .ToList();
-
-        var messageTypes = handlerClasses
-            .Select(type => new
-            {
-                EventName = type.GetCustomAttribute<EventMessageHandleAttribute>()?.EventName,
-                MessageType = type.GetInterfaces()
-                    .First(i => i.IsGenericType && i.GetGenericTypeDefinition() == handlerInterface)
-                    .GetGenericArguments()
-                    .FirstOrDefault()
-            })
-            .Where(x => x.EventName is not null && x.MessageType is not null)
-            .ToDictionary(x => x.EventName!, x => x.MessageType!);
-
-        return messageTypes;
-    }
+    private readonly Dictionary<string, Type> _messageTypes = mapProvider.GetMessageTypes();
 
     public async Task DispatchAsync(string eventType, IEventMessage message)
     {

@@ -40,6 +40,7 @@ public static class DependencyInjectionExtension
     private static void AddEventHandlers(IServiceCollection service)
     {
         service.AddScoped<IEventMessageHandler<RegisterVisitorEventMessage>, RegisterVisitorMessageHandler>();
+        service.AddSingleton<IEventMessageHandlerMapProvider, EventMessageHandlerMapProvider>();
         service.AddSingleton<IEventDispatcher, EventDispatcher>();
     }
 }

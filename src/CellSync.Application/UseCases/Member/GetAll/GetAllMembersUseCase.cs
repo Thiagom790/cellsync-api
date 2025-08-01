@@ -6,7 +6,7 @@ public class GetAllMembersUseCase(IMemberRepository memberRepository) : IGetAllM
 {
     public async Task<GetAllMembersResponse> ExecuteAsync()
     {
-        var result = await memberRepository.GetAll();
+        var result = await memberRepository.GetAllAsync();
 
         var response = new GetAllMembersResponse
         {

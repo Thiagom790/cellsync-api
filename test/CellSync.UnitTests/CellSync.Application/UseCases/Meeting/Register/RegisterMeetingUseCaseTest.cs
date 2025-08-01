@@ -6,7 +6,7 @@ using CellSync.Domain.Repositories.Meeting;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
-namespace CellSync.UnitTests.CellSync.Application.UseCases;
+namespace CellSync.UnitTests.CellSync.Application.UseCases.Meeting.Register;
 
 public class RegisterMeetingUseCaseTest
 {
@@ -48,7 +48,7 @@ public class RegisterMeetingUseCaseTest
         };
 
         _cellRepository.GetByIdAsync(cellId).Returns(cell);
-        _meetingRepository.AddAsync(Arg.Any<Meeting>()).Returns(Task.CompletedTask);
+        _meetingRepository.AddAsync(Arg.Any<Domain.Entities.Meeting>()).Returns(Task.CompletedTask);
         _unitOfWork.CommitAsync().Returns(Task.CompletedTask);
 
         //Act
@@ -59,7 +59,7 @@ public class RegisterMeetingUseCaseTest
 
         await _cellRepository.Received(1).GetByIdAsync(cellId);
 
-        await _meetingRepository.Received(1).AddAsync(Arg.Is<Meeting>(m =>
+        await _meetingRepository.Received(1).AddAsync(Arg.Is<Domain.Entities.Meeting>(m =>
             m.MeetingDate == request.MeetingDate &&
             m.MeetingAddress == request.MeetingAddress &&
             m.CellId == cellId &&
@@ -91,7 +91,7 @@ public class RegisterMeetingUseCaseTest
 
         Assert.Equal("Cell not found", ex.Message);
 
-        await _meetingRepository.DidNotReceive().AddAsync(Arg.Any<Meeting>());
+        await _meetingRepository.DidNotReceive().AddAsync(Arg.Any<Domain.Entities.Meeting>());
         await _unitOfWork.DidNotReceive().CommitAsync();
 
         Assert.IsType<Exception>(ex);

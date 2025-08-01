@@ -17,11 +17,18 @@ public class EventHubPublisher(IEventHubSettings settings) : IEventPublisher, IA
     public async Task PublishAsync<TEventMessage>(string eventType, TEventMessage message)
         where TEventMessage : IEventMessage
     {
-        using var eventBatch = await _producerClient.CreateBatchAsync();
-        var eventBody = JsonSerializer.Serialize(new { EventType = eventType, EventData = message });
-        eventBatch.TryAdd(new EventData(Encoding.UTF8.GetBytes(eventBody)));
+        try
+        {
+            using var eventBatch = await _producerClient.CreateBatchAsync();
+            var eventBody = JsonSerializer.Serialize(new { EventType = eventType, EventData = message });
+            eventBatch.TryAdd(new EventData(Encoding.UTF8.GetBytes(eventBody)));
 
-        await _producerClient.SendAsync(eventBatch);
+            await _producerClient.SendAsync(eventBatch);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
 
     public async ValueTask DisposeAsync()

@@ -6,7 +6,7 @@ public class GetMemberByIdUseCase(IMemberRepository repository) : IGetMemberById
 {
     public async Task<GetMemberByIdResponse> ExecuteAsync(Guid id)
     {
-        var result = await repository.GetById(id);
+        var result = await repository.GetByIdAsync(id);
 
         if (result is null)
         {

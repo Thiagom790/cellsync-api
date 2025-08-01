@@ -7,7 +7,7 @@ public class UpdateMemberUseCase(IMemberRepository repository, IUnitOfWork unitO
 {
     public async Task ExecuteAsync(Guid memberId, UpdateMemberRequest updateMemberRequest)
     {
-        var member = await repository.GetById(memberId);
+        var member = await repository.GetByIdAsync(memberId);
 
         if (member is null)
         {
@@ -20,7 +20,7 @@ public class UpdateMemberUseCase(IMemberRepository repository, IUnitOfWork unitO
         member.ProfileType = updateMemberRequest.ProfileType;
         member.UpdatedAt = DateTime.UtcNow;
 
-        repository.Update(member);
+        repository.UpdateAsync(member);
         await unitOfWork.CommitAsync();
     }
 }

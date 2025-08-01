@@ -2,5 +2,5 @@
 
 public interface IRegisterMemberUseCase
 {
-    Task<RegisterMemberResponse> Execute(RegisterMemberRequest request);
+    Task<RegisterMemberResponse> ExecuteAsync(RegisterMemberRequest request);
 }

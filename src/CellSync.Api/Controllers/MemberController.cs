@@ -40,7 +40,7 @@ public class MemberController : ControllerBase
         [FromServices] IRegisterMemberUseCase useCase
     )
     {
-        var response = await useCase.Execute(registerMemberRequest);
+        var response = await useCase.ExecuteAsync(registerMemberRequest);
 
         return Created(string.Empty, response);
     }

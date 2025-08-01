@@ -2,5 +2,5 @@
 
 public interface IRegisterMeetingUseCase
 {
-    Task<RegisterMeetingResponse> ExecuteAsync(RegisterMeetingRequest registerMeetingRequest);
+    Task<RegisterMeetingResponse> ExecuteAsync(RegisterMeetingRequest request);
 }

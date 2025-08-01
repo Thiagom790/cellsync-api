@@ -2,11 +2,11 @@
 
 public interface IMemberRepository
 {
-    Task Add(Entities.Member member);
+    Task AddAsync(Entities.Member member);
 
-    Task<List<Entities.Member>> GetAll();
+    Task<List<Entities.Member>> GetAllAsync();
 
-    Task<Entities.Member?> GetById(Guid id);
+    Task<Entities.Member?> GetByIdAsync(Guid id);
 
-    void Update(Entities.Member member);
+    void UpdateAsync(Entities.Member member);
 }

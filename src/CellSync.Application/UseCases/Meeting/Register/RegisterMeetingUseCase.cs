@@ -11,9 +11,9 @@ public class RegisterMeetingUseCase(
     IUnitOfWork unitOfWork
 ) : IRegisterMeetingUseCase
 {
-    public async Task<RegisterMeetingResponse> ExecuteAsync(RegisterMeetingRequest registerMeetingRequest)
+    public async Task<RegisterMeetingResponse> ExecuteAsync(RegisterMeetingRequest request)
     {
-        var cell = await cellRepository.GetByIdAsync(registerMeetingRequest.CellId);
+        var cell = await cellRepository.GetByIdAsync(request.CellId);
 
         if (cell is null)
         {
@@ -25,13 +25,13 @@ public class RegisterMeetingUseCase(
         var meeting = new Domain.Entities.Meeting
         {
             Id = meetingId,
-            MeetingDate = registerMeetingRequest.MeetingDate,
-            MeetingAddress = registerMeetingRequest.MeetingAddress,
+            MeetingDate = request.MeetingDate,
+            MeetingAddress = request.MeetingAddress,
             CellId = cell.Id,
             LeaderId = cell.CurrentLeaderId,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            MeetingMembers = registerMeetingRequest.MeetingMembers.Select(meetingMember => new MeetingMember
+            MeetingMembers = request.MeetingMembers.Select(meetingMember => new MeetingMember
             {
                 MeetingId = meetingId,
                 MemberId = meetingMember.MemberId
