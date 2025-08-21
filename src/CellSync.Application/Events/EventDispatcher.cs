@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using CellSync.Domain.Events.Config;
+﻿using CellSync.Domain.Events.Config;
 using CellSync.Domain.Events.Messages;
 using Microsoft.Extensions.DependencyInjection;
 

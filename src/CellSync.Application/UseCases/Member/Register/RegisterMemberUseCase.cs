@@ -8,8 +8,8 @@ namespace CellSync.Application.UseCases.Member.Register;
 
 public class RegisterMemberUseCase(
     IMemberRepository memberRepository,
-    IUnitOfWork unitOfWork,
-    IEventPublisher eventPublisher
+    IUnitOfWork unitOfWork
+    // IEventPublisher eventPublisher
 ) : IRegisterMemberUseCase
 {
     public async Task<RegisterMemberResponse> ExecuteAsync(RegisterMemberRequest request)
@@ -28,18 +28,18 @@ public class RegisterMemberUseCase(
         await memberRepository.AddAsync(newMember);
         await unitOfWork.CommitAsync();
 
-        if (newMember.ProfileType == ProfileTypes.VISITOR)
-        {
-            _ = eventPublisher.PublishAsync(
-                EventNames.REGISTER_VISITOR,
-                new RegisterVisitorEventMessage
-                {
-                    Email = newMember.Email,
-                    Name = newMember.Name,
-                    Phone = newMember.Phone,
-                    Id = newMember.Id,
-                });
-        }
+        // if (newMember.ProfileType == ProfileTypes.VISITOR)
+        // {
+        //     _ = eventPublisher.PublishAsync(
+        //         EventNames.REGISTER_VISITOR,
+        //         new RegisterVisitorEventMessage
+        //         {
+        //             Email = newMember.Email,
+        //             Name = newMember.Name,
+        //             Phone = newMember.Phone,
+        //             Id = newMember.Id,
+        //         });
+        // }
 
         return new RegisterMemberResponse { Id = newMember.Id };
     }

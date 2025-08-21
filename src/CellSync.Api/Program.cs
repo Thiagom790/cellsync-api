@@ -30,3 +30,7 @@ app.MapControllers();
 await app.Services.MigrateDatabaseAsync();
 
 app.Run();
+
+public partial class Program
+{
+}
