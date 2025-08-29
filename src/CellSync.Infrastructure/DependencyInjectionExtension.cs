@@ -17,7 +17,7 @@ public static class DependencyInjectionExtension
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         AddDbContext(services, configuration);
-        // AddAzureEventHub(services, configuration);
+        AddAEventServices(services);
         AddRepositories(services);
     }
 
@@ -29,13 +29,11 @@ public static class DependencyInjectionExtension
         services.AddScoped<IMeetingRepository, MeetingRepository>();
     }
 
-    private static void AddAzureEventHub(IServiceCollection services, IConfiguration configuration)
+    private static void AddAEventServices(IServiceCollection services)
     {
-        var eventHubSettings = configuration.GetSection("AzureEventHub").Get<EventHubSettings>();
-
-        services.AddSingleton<IEventHubSettings>(eventHubSettings!);
-        services.AddScoped<IEventPublisher, EventHubPublisher>();
-        services.AddHostedService<EventHubConsumer>();
+        services.AddScoped<IEventPublisher, EventPublisher>();
+        services.AddHostedService<EventConsumer>();
+        services.AddSingleton<InMemoryMessageQueue>();
     }
 
     private static void AddDbContext(IServiceCollection services, IConfiguration configuration)

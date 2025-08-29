@@ -8,6 +8,8 @@ namespace CellSync.UnitTests.CellSync.Application.Events;
 
 public class FakeEventMessage : IEventMessage
 {
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public string Type { get; set; } = "FakeEvent";
     public string Content { get; set; } = string.Empty;
 }
 

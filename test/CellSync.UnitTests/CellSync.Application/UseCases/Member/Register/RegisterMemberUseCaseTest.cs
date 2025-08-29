@@ -1,4 +1,6 @@
 ﻿using CellSync.Application.UseCases.Member.Register;
+using CellSync.Domain.Events.Config;
+using CellSync.Domain.Events.Messages;
 using CellSync.Domain.Repositories;
 using CellSync.Domain.Repositories.Member;
 using NSubstitute;
@@ -9,14 +11,16 @@ public class RegisterMemberUseCaseTest
 {
     private readonly IMemberRepository _memberRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IEventPublisher _eventPublisher;
     private readonly RegisterMemberUseCase _useCase;
 
     public RegisterMemberUseCaseTest()
     {
         _memberRepository = Substitute.For<IMemberRepository>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
+        _eventPublisher = Substitute.For<IEventPublisher>();
 
-        _useCase = new RegisterMemberUseCase(_memberRepository, _unitOfWork);
+        _useCase = new RegisterMemberUseCase(_memberRepository, _unitOfWork, _eventPublisher);
     }
 
     [Fact]
@@ -34,6 +38,7 @@ public class RegisterMemberUseCaseTest
 
         _unitOfWork.CommitAsync().Returns(Task.CompletedTask);
 
+        _eventPublisher.PublishAsync(Arg.Any<RegisterVisitorEventMessage>()).Returns(Task.CompletedTask);
 
         var response = await _useCase.ExecuteAsync(request);
 
@@ -44,6 +49,15 @@ public class RegisterMemberUseCaseTest
             arg.Name == request.Name &&
             arg.Phone == request.Phone &&
             arg.ProfileType == request.ProfileType
+        ));
+
+        await _unitOfWork.Received(1).CommitAsync();
+
+        await _eventPublisher.Received(1).PublishAsync(Arg.Is<RegisterVisitorEventMessage>(e =>
+            e.Email == request.Email &&
+            e.Name == request.Name &&
+            e.Phone == request.Phone &&
+            e.Id == response.Id
         ));
     }
 }
