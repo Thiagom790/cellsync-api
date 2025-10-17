@@ -5,6 +5,7 @@ using CellSync.Application.UseCases.Cell.Register;
 using CellSync.Application.UseCases.Cell.Update;
 using CellSync.Application.UseCases.Meeting.GetAll;
 using CellSync.Application.UseCases.Meeting.Register;
+using CellSync.Application.UseCases.Member.BatchRegister;
 using CellSync.Application.UseCases.Member.GetAll;
 using CellSync.Application.UseCases.Member.GetById;
 using CellSync.Application.UseCases.Member.Register;
@@ -35,6 +36,7 @@ public static class DependencyInjectionExtension
         service.AddScoped<IGetMemberByIdUseCase, GetMemberByIdUseCase>();
         service.AddScoped<IRegisterMeetingUseCase, RegisterMeetingUseCase>();
         service.AddScoped<IGetAllMeetingsUseCase, GetAllMeetingsUseCase>();
+        service.AddScoped<IBatchRegisterMemberUseCase, BatchRegisterMemberUseCase>();
     }
 
     private static void AddEventHandlers(IServiceCollection service)

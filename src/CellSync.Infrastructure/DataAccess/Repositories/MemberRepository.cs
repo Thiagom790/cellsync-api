@@ -8,6 +8,8 @@ internal class MemberRepository(CellSyncDbContext dbContext) : IMemberRepository
 {
     public async Task AddAsync(Member member) => await dbContext.Members.AddAsync(member);
 
+    public Task AddRangeAsync(IEnumerable<Member> members) => dbContext.Members.AddRangeAsync(members);
+
     public async Task<List<Member>> GetAllAsync() => await dbContext.Members.AsNoTracking().ToListAsync();
 
     public async Task<Member?> GetByIdAsync(Guid id) => await dbContext.Members.FindAsync(id);

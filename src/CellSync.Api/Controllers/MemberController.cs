@@ -1,7 +1,10 @@
-﻿using CellSync.Application.UseCases.Member.GetAll;
+﻿using CellSync.Api.Adapters;
+using CellSync.Application.UseCases.Member.BatchRegister;
+using CellSync.Application.UseCases.Member.GetAll;
 using CellSync.Application.UseCases.Member.GetById;
 using CellSync.Application.UseCases.Member.Register;
 using CellSync.Application.UseCases.Member.Update;
+using CellSync.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CellSync.Api.Controllers;
@@ -57,5 +60,18 @@ public class MemberController : ControllerBase
         await useCase.ExecuteAsync(id, updateMemberRequest);
 
         return NoContent();
+    }
+
+    [HttpPost]
+    [Route("batch-register")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult> BatchRegister(IFormFile file,
+        [FromServices] IBatchRegisterMemberUseCase useCase)
+    {
+        var request = new FormFileAdapter(file);
+
+        await useCase.ExecuteAsync(request);
+
+        return Created(string.Empty, null);
     }
 }
