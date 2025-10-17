@@ -27,6 +27,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IMemberRepository, MemberRepository>();
         services.AddScoped<ICellRepository, CellRepository>();
         services.AddScoped<IMeetingRepository, MeetingRepository>();
+        services.AddScoped<IBulkInsertRepository, BulkInsertRepository>();
     }
 
     private static void AddAEventServices(IServiceCollection services)

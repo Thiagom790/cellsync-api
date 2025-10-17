@@ -1,5 +1,6 @@
 ﻿using CellSync.Api.Adapters;
 using CellSync.Application.UseCases.Member.BatchRegister;
+using CellSync.Application.UseCases.Member.BulkTests;
 using CellSync.Application.UseCases.Member.GetAll;
 using CellSync.Application.UseCases.Member.GetById;
 using CellSync.Application.UseCases.Member.Register;
@@ -73,5 +74,18 @@ public class MemberController : ControllerBase
         await useCase.ExecuteAsync(request);
 
         return Created(string.Empty, null);
+    }
+    
+    [HttpPost]
+    [Route("batch-register/test")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult> BatchRegisterTest(IFormFile file,
+        [FromServices] IBulkTestsUseCase useCase)
+    {
+        var request = new FormFileAdapter(file);
+
+        var response = await useCase.ExecuteAsync(request);
+
+        return Ok(response);
     }
 }
