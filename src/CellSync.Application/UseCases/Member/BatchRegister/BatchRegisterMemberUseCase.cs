@@ -5,7 +5,10 @@ using CellSync.Domain.Repositories.Member;
 
 namespace CellSync.Application.UseCases.Member.BatchRegister;
 
-public class BatchRegisterMemberUseCase(IMemberRepository repository, IUnitOfWork unitOfWork) : IBatchRegisterMemberUseCase
+public class BatchRegisterMemberUseCase(
+    IMemberRepository repository,
+    IUnitOfWork unitOfWork
+) : IBatchRegisterMemberUseCase
 {
     private readonly List<string> _allowedExtensions = [".csv"];
 
@@ -28,10 +31,10 @@ public class BatchRegisterMemberUseCase(IMemberRepository repository, IUnitOfWor
         using var csv = new CsvHelper.CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture);
 
         var now = DateTime.UtcNow;
-        
+
         var records = csv.GetRecords<BatchRegisterMember>();
 
-        
+
         var members = records.Select(requestMember => new Domain.Entities.Member()
         {
             Id = Guid.NewGuid(),
@@ -44,7 +47,7 @@ public class BatchRegisterMemberUseCase(IMemberRepository repository, IUnitOfWor
             CreatedAt = now,
             UpdatedAt = now
         });
-        
+
         await repository.AddRangeAsync(members);
 
         await unitOfWork.CommitAsync();
