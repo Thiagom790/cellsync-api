@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellSync.UnitTests", "test\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellSync.IntegrationTest", "test\CellSync.IntegrationTest\CellSync.IntegrationTest.csproj", "{85F40AF4-FCE6-4A8C-B4CA-8736223EA642}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellSync.AppHost", "src\CellSync.AppHost\CellSync.AppHost.csproj", "{83D076AE-A289-4004-ADA8-A297EF413EBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellSync.ServiceDefaults", "src\CellSync.ServiceDefaults\CellSync.ServiceDefaults.csproj", "{58FCD522-4F44-4AA9-93B9-DE90737402EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,8 @@ Global
 		{7174C1FC-10AE-429F-878E-920E539ACFEC} = {40E730C4-0BEB-4F0F-983C-1640FA118263}
 		{DDC504B5-3F7F-4269-B306-21A6268BBBC4} = {A4A88F5A-BD9C-48B5-A973-2E93A7FE54BC}
 		{85F40AF4-FCE6-4A8C-B4CA-8736223EA642} = {A4A88F5A-BD9C-48B5-A973-2E93A7FE54BC}
+		{83D076AE-A289-4004-ADA8-A297EF413EBE} = {40E730C4-0BEB-4F0F-983C-1640FA118263}
+		{58FCD522-4F44-4AA9-93B9-DE90737402EF} = {40E730C4-0BEB-4F0F-983C-1640FA118263}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{1A38D8AD-DA02-4831-BBA4-6A759A612008}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -59,5 +65,13 @@ Global
 		{85F40AF4-FCE6-4A8C-B4CA-8736223EA642}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85F40AF4-FCE6-4A8C-B4CA-8736223EA642}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85F40AF4-FCE6-4A8C-B4CA-8736223EA642}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83D076AE-A289-4004-ADA8-A297EF413EBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83D076AE-A289-4004-ADA8-A297EF413EBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83D076AE-A289-4004-ADA8-A297EF413EBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83D076AE-A289-4004-ADA8-A297EF413EBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58FCD522-4F44-4AA9-93B9-DE90737402EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58FCD522-4F44-4AA9-93B9-DE90737402EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58FCD522-4F44-4AA9-93B9-DE90737402EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58FCD522-4F44-4AA9-93B9-DE90737402EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

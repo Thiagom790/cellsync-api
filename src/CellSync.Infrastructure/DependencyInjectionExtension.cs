@@ -6,19 +6,18 @@ using CellSync.Domain.Repositories.Member;
 using CellSync.Infrastructure.DataAccess;
 using CellSync.Infrastructure.DataAccess.Repositories;
 using CellSync.Infrastructure.Events;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace CellSync.Infrastructure;
 
 public static class DependencyInjectionExtension
 {
-    public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static void AddInfrastructure(this IHostApplicationBuilder builder)
     {
-        AddDbContext(services, configuration);
-        AddAEventServices(services);
-        AddRepositories(services);
+        AddDbContext(builder);
+        AddAEventServices(builder.Services);
+        AddRepositories(builder.Services);
     }
 
     private static void AddRepositories(this IServiceCollection services)
@@ -36,10 +35,8 @@ public static class DependencyInjectionExtension
         services.AddSingleton<InMemoryMessageQueue>();
     }
 
-    private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
+    private static void AddDbContext(IHostApplicationBuilder builder)
     {
-        var connectionString = configuration.GetValue<string>("DataBase:ConnectionString");
-
-        services.AddDbContext<CellSyncDbContext>(config => config.UseNpgsql(connectionString));
+        builder.AddNpgsqlDbContext<CellSyncDbContext>(connectionName: "cellsync");
     }
 }
